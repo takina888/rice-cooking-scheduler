@@ -1,4 +1,4 @@
-const CACHE='rice-app-ver18-pass4158';
+const CACHE='rice-app-ver37-schedule-labels';
 const ASSETS=['./','index.html','manifest.json','sw.js'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
