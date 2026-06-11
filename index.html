@@ -3,6 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>
+(function(){
+  // Android Chromeで「PC版サイト」設定が残っている場合でも、
+  // 端末の実画面幅に近いviewportへ戻して縮小表示を防ぐ。
+  var isAndroid = /Android/i.test(navigator.userAgent);
+  var narrowScreen = Math.min(screen.width || 0, screen.height || 0);
+  if(isAndroid && narrowScreen && narrowScreen <= 700){
+    var vp = document.querySelector('meta[name="viewport"]');
+    if(vp){
+      vp.setAttribute('content','width=' + narrowScreen + ',initial-scale=1,maximum-scale=1,viewport-fit=cover');
+    }
+    document.documentElement.classList.add('android-mobile-force');
+  }
+})();
+</script>
 <title>炊飯時間計算アプリ</title>
 <link rel="manifest" href="./manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -131,6 +146,32 @@ input[type="time"], input[readonly]{ text-align:left !important; }
   ::-webkit-datetime-edit-fields-wrapper{
     justify-content:flex-end !important;
   }
+}
+
+
+/* Ver48: Android PC版サイト設定が残っても縮小表示になりにくくする */
+html.android-mobile-force,
+html.android-mobile-force body{
+  width:100%;
+  min-width:0;
+  overflow-x:hidden;
+}
+html.android-mobile-force .app{
+  width:100%;
+  max-width:none;
+  padding:12px 10px 36px;
+}
+html.android-mobile-force h1{font-size:29px;}
+html.android-mobile-force .row{grid-template-columns:1fr 1.35fr;}
+html.android-mobile-force .setting-row{grid-template-columns:1fr 110px;}
+html.android-mobile-force .tile .val{font-size:24px;}
+html.android-mobile-force input,
+html.android-mobile-force select,
+html.android-mobile-force button{font-size:16px;}
+html.android-mobile-force .tablewrap,
+html.android-mobile-force .process-summary-wrap{
+  max-width:100%;
+  overflow-x:auto;
 }
 
 </style>
