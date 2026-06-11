@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>炊飯時間計算アプリ</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{
+  --bg:#F2F2F7;--card:#FFFFFF;--label:#8E8E93;--text:#1C1C1E;--line:#D1D1D6;
+  --blue:#007AFF;--green:#34C759;--red:#FF3B30;--secondary:#F9F9FB;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI","Noto Sans JP","Noto Sans TC",Arial,sans-serif}
+.app{max-width:840px;margin:0 auto;padding:14px 12px 42px}
+header{padding:10px 4px 16px}
+h1{font-size:31px;line-height:1.1;margin:0;font-weight:800;letter-spacing:-.8px}
+.group-title{font-size:13px;color:var(--label);font-weight:600;margin:22px 4px 7px}
+.card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 .5px 0 rgba(0,0,0,.08)}
+.customer-list{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 .5px 0 rgba(0,0,0,.08)}
+.customer-item{min-height:46px;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:.5px solid var(--line);font-size:16px}
+.customer-item:last-child{border-bottom:0}
+.customer-item button{min-height:34px;border-radius:10px;font-size:14px;padding:0 10px;background:var(--secondary)}
+.customer-empty{padding:12px 14px;color:var(--label);font-size:14px}
+.row{min-height:48px;display:grid;grid-template-columns:1fr 1.25fr;gap:10px;align-items:center;padding:8px 14px;border-bottom:.5px solid var(--line)}
+.row:last-child{border-bottom:0}
+.label{font-size:16px;color:var(--text)}
+.control input,.control select{width:100%;height:36px;border:0;background:transparent;color:var(--blue);font-size:16px;text-align:right;outline:none}
+.control select{direction:rtl}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--card);border-radius:18px;padding:15px;min-height:94px}
+.tile .name{font-size:13px;color:var(--label);margin-bottom:8px}
+.tile .val{font-size:28px;font-weight:800;letter-spacing:-.4px;word-break:break-word}
+.tile.main .val{color:var(--blue)}
+.tile.green .val{color:var(--green)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+button{border:0;border-radius:14px;min-height:48px;font-size:16px;font-weight:700;background:var(--card);color:var(--blue)}
+.primary{background:var(--blue);color:white}
+.note{font-size:12px;line-height:1.55;color:var(--label);padding:10px 4px 0}
+.error{font-size:13px;color:var(--red);padding:8px 4px 0;min-height:20px}
+details{background:var(--card);border-radius:16px;overflow:hidden}
+summary{list-style:none;padding:14px;font-size:16px;font-weight:600;color:var(--blue);border-bottom:.5px solid var(--line)}
+summary::-webkit-details-marker{display:none}
+.setting-row{display:grid;grid-template-columns:1fr 120px;gap:8px;align-items:center;min-height:52px;padding:8px 14px;border-bottom:.5px solid var(--line)}
+.setting-row:last-child{border-bottom:0}
+.setting-row select{height:36px;border:0;background:transparent;color:var(--blue);font-size:16px;text-align:right;outline:none;direction:rtl}
+.tablewrap{overflow:auto;background:var(--card);border-radius:16px}
+table{width:100%;border-collapse:separate;border-spacing:0;min-width:680px}
+th,td{padding:11px 10px;border-bottom:.5px solid var(--line);font-size:14px;text-align:center;white-space:nowrap}
+th{color:var(--label);font-weight:600;background:var(--secondary)}
+td:first-child,th:first-child{font-weight:700}
+tr:last-child td{border-bottom:0}
+.print-title{display:none}
+.footer{font-size:11px;color:var(--label);text-align:center;margin-top:22px}
+@media(max-width:560px){
+  .app{padding:12px 10px 36px}
+  h1{font-size:29px}
+  .summary{grid-template-columns:1fr 1fr}
+  .tile{min-height:86px;padding:13px}
+  .tile .val{font-size:24px}
+  .row{grid-template-columns:1fr 1.35fr}
+  .setting-row{grid-template-columns:1fr 110px}
+}
+@media(max-width:380px){.summary{grid-template-columns:1fr}.row{grid-template-columns:1fr}.setting-row{grid-template-columns:1fr 1fr}}
+@media print{
+  body{background:white}
+  header,.btns,.customer-list,.note,.footer{display:none!important}
+  #processTimeTitle,#processTimeSection{display:none!important}
+  .app{max-width:none;padding:0}
+  .print-title{display:block;font-size:24px;font-weight:800;margin:0 0 12px}
+  .card,.tile,.tablewrap,details{box-shadow:none;border:1px solid #ddd}
+  details{display:block}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <h1 data-k="app_name">炊飯時間計算アプリ</h1>
+</header>
+
+<div class="print-title" id="printTitle">炊飯計画</div>
+
+<section id="inputSection">
+  <div class="group-title" data-k="basic_info">基本情報</div>
+  <div class="card">
+    <div class="row"><div class="label" data-k="customer_name">顧客名</div><div class="control"><input id="docTitle" type="text" value="〇〇食品"></div></div>
+    <div class="row">
+      <div class="label" data-k="language">表示言語</div>
+      <div class="control">
+        <select id="lang">
+          <option value="ja">日本語</option>
+          <option value="zh_tw">繁體中文（台灣）</option>
+          <option value="zh_cn">简体中文（中国）</option>
+          <option value="en">English</option>
+          <option value="ko">한국어</option>
+          <option value="vi">Tiếng Việt</option>
+          <option value="th">ภาษาไทย</option>
+          <option value="id">Bahasa Indonesia</option>
+          <option value="fil">Filipino</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="group-title" data-k="customer_list">顧客一覧</div>
+  <div class="customer-list" id="customerList"></div>
+
+  <div class="group-title" data-k="input_settings">入力設定</div>
+  <div class="card">
+    <div class="row">
+      <div class="label" data-k="method">計算方式</div>
+      <div class="control">
+        <select id="method">
+          <option value="method_start" data-method-label="method_start">開始時間から計算</option>
+          <option value="method_finish" data-method-label="method_finish">完了希望時間から逆算</option>
+          <option value="method_after_process_start" data-method-label="method_after_process_start">後工程開始時間から計算</option>
+        </select>
+      </div>
+    </div>
+    <div class="row"><div class="label" data-k="time_input">指定時間</div><div class="control"><input id="timeInput" type="time" value="08:00"></div></div>
+    <div class="row"><div class="label" data-k="pot_count">炊飯釜数</div><div class="control"><input id="pots" type="number" min="1" max="999" value="125"></div></div>
+    
+  </div>
+
+
+  <div class="group-title" data-k="detail_settings">詳細設定</div>
+  <details id="detailDetails">
+    <summary id="detailSummaryToggle" data-k="show_detail_settings">詳細設定を表示</summary>    <div class="row"><div class="label" data-k="tact_time">タクト時間</div><div class="control"><select id="taktValue"></select></div></div>
+    <div class="row"><div class="label" data-k="rice_weight_per_pot">精米重量／釜</div><div class="control"><input id="ricePerPot" type="number" step="0.1" value="7"></div></div>
+    <div class="row"><div class="label" data-k="yield_rate">歩留まり</div><div class="control"><input id="yieldRate" type="number" step="0.1" value="2.1"></div></div>
+    <div class="sub-title" data-k="seasoning_settings">調味液設定</div>
+    <div class="setting-row">
+      <div class="label" data-k="seasoning_name">名称</div>
+      <div class="label" data-k="seasoning_amount_per_pot">添加量(g/釜)</div>
+    </div>
+    <div class="setting-row"><input id="seasoningName0" type="text" value="調味液A"><input id="seasoningAmount0" type="number" min="0" step="1" value="0"></div>
+    <div class="setting-row"><input id="seasoningName1" type="text" value="調味液B"><input id="seasoningAmount1" type="number" min="0" step="1" value="0"></div>
+    <div class="setting-row"><input id="seasoningName2" type="text" value="調味液C"><input id="seasoningAmount2" type="number" min="0" step="1" value="0"></div>
+  </details>
+
+  <div class="group-title" data-k="setting_values">工程設定値</div>
+  <details id="settingDetails">
+    <summary id="settingSummaryToggle" data-k="show_setting_values">工程設定値を表示</summary>
+    <div id="settingRows"></div>
+  </details>
+
+  <div class="btns">
+    <button class="primary" onclick="saveCustomerSetting()" data-k="save_customer">保存</button>
+    <button onclick="deleteCurrentCustomerSetting()" data-k="delete_customer">現在の顧客を削除</button>
+    <button onclick="window.print()" data-k="print">PDF/印刷</button>
+    <button onclick="downloadCSV()" data-k="csv">CSV出力</button>
+  </div>
+  <div id="err" class="error"></div>
+  <div class="note no-print" data-k="time_note">工程設定値は分と秒を選択します。タクト時間は 00:01:30 のように入力できます。70秒は 00:01:10 です。</div>
+</section>
+
+<div class="group-title" data-k="production_summary">生産概要</div>
+<section class="summary">
+  <div class="tile"><div class="name" data-k="customer_name">顧客名</div><div class="val" id="outTitle" style="font-size:20px">--</div></div>
+  <div class="tile"><div class="name" data-k="total_pots">総釜数</div><div class="val" id="outTotalPots">--</div></div>
+  <div class="tile main"><div class="name" data-k="line_start">生産ライン開始時間</div><div class="val" id="outLineStart">--:--</div></div>
+  <div class="tile green"><div class="name" data-k="post_process_start">後工程開始時間</div><div class="val" id="outPostStart">--:--</div></div>
+  <div class="tile"><div class="name" data-k="final_finish">最終完了時間</div><div class="val" id="outFinalFinish">--:--</div></div>
+  <div class="tile"><div class="name" data-k="total_duration">総所要時間</div><div class="val" id="outDuration">--</div></div>
+  <div class="tile"><div class="name" data-k="used_rice_weight">使用精米量(kg)</div><div class="val" id="outRice">--</div></div>
+  <div class="tile"><div class="name" data-k="estimated_total_cooked_weight">想定炊飯総量(kg)</div><div class="val" id="outCooked">--</div></div>
+  <div class="tile"><div class="name" data-k="seasoning_required_amount">調味液必要量(g)</div><div class="val" id="outSeasonings" style="font-size:16px;line-height:1.45">--</div></div>
+</section>
+
+<div class="group-title" id="processTimeTitle" data-k="process_time">工程時間</div>
+<section class="card" id="processTimeSection">
+  <div class="row"><div class="label" data-k="line_start">生産ライン開始時間</div><div class="control"><input readonly id="ptLineStart" value="--:--"></div></div>
+  <div class="row"><div class="label" data-k="post_process_start">後工程開始時間</div><div class="control"><input readonly id="ptPostStart" value="--:--"></div></div>
+  <div class="row"><div class="label" data-k="last_start">最終釜開始時間</div><div class="control"><input readonly id="ptLastStart" value="--:--"></div></div>
+  <div class="row"><div class="label" data-k="final_finish">最終完了時間</div><div class="control"><input readonly id="ptFinalFinish" value="--:--"></div></div>
+  <div class="row"><div class="label" data-k="total_duration">総所要時間</div><div class="control"><input readonly id="ptDuration" value="--"></div></div>
+</section>
+
+<div class="note" data-k="rule_note">時間は参考値です。</div>
+
+<div class="group-title" data-k="pot_schedule">釜別スケジュール</div>
+<section class="tablewrap">
+  <table>
+    <thead>
+      <tr>
+        <th data-k="no">No.</th>
+        <th data-k="process_2">洗米開始／浸漬開始</th>
+        <th data-k="process_3">浸漬完了／充填開始</th>
+        <th data-k="pot_discharge">釜排出時間</th>
+        <th data-k="process_5">蒸らし完了</th>
+        <th data-k="process_6">ほぐし完了</th>
+        <th data-k="finish_time">次工程開始</th>
+      </tr>
+    </thead>
+    <tbody id="scheduleBody"></tbody>
+  </table>
+</section>
+
+<div class="footer">Rice Cooking Time Calculator</div>
+</div>
+
+<script>
+const D={
+ja:{app_name:"炊飯時間計算アプリ",basic_info:"基本情報",title_field:"タイトル",customer_name:"顧客名",customer_list:"顧客一覧",save_customer:"保存",delete_customer:"現在の顧客を削除",load:"読込",no_customer:"保存済み顧客はありません",input_settings:"入力設定",language:"表示言語",method:"計算方式",method_start:"開始時間から計算",method_finish:"完了希望時間から逆算",method_after_process_start:"後工程開始時間から計算",time_input:"指定時間",pot_count:"炊飯釜数",tact_time:"タクト時間",rice_weight_per_pot:"精米重量／釜",expected_yield:"歩留まり",yield_rate:"歩留まり",detail_settings:"詳細設定",show_detail_settings:"詳細設定を表示",hide_detail_settings:"詳細設定を隠す",setting_values:"工程設定値",show_setting_values:"工程設定値を表示",hide_setting_values:"工程設定値を隠す",minute:"分",second:"秒",process_1:"AES運転準備",process_2:"洗米開始／浸漬開始",process_3:"浸漬完了／充填開始",process_4:"炊飯釜排出時間",process_5:"蒸らし完了",process_6:"ほぐし完了",process_7:"完了",pot_discharge:"炊飯釜排出時間",calc:"計算",company_setting:"顧客設定",save_company_setting:"顧客設定保存",load_company_setting:"顧客設定読込",delete_company_setting:"顧客設定削除",save_standard:"標準設定保存",load_standard:"標準設定読込",reset:"初期値",print:"PDF/印刷",csv:"CSV出力",time_note:"タクト時間は30〜180秒の選択式です。工程設定値は30秒単位の選択式です。",production_summary:"生産概要",process_time:"工程時間",process:"工程",start_time:"開始時刻",end_time:"終了時刻",process_duration:"工程時間",unit:"単位",total_pots:"総釜数",line_start:"生産ライン開始時間",post_process_start:"後工程開始時間",last_start:"最終釜開始時間",final_finish:"最終完了時間",total_duration:"総所要時間",used_rice_weight:"使用精米量(kg)",estimated_total_cooked_weight:"想定炊飯総量(kg)",seasoning_settings:"調味液設定",seasoning_name:"名称",seasoning_amount_per_pot:"添加量(g/釜)",seasoning_required_amount:"調味液必要量(g)",rule_note:"時間は参考値です。",pot_schedule:"釜別スケジュール",no:"No.",finish_time:"次工程開始",err:"入力内容を確認してください。",saved:"設定を保存しました。",loaded:"設定を読み込みました。",deleted:"設定を削除しました。"},
+zh_tw:{app_name:"炊飯時間計算APP",basic_info:"基本資訊",title_field:"標題",customer_name:"客戶名稱",customer_list:"客戶列表",save_customer:"儲存",delete_customer:"刪除目前客戶",load:"讀取",no_customer:"尚無已儲存客戶",input_settings:"輸入設定",language:"顯示語言",method:"計算方式",method_start:"由開始時間計算",method_finish:"由希望完成時間逆算",method_after_process_start:"由後工程開始時間計算",time_input:"指定時間",pot_count:"炊飯鍋數",tact_time:"節拍時間",rice_weight_per_pot:"每鍋精米重量",expected_yield:"產出率",yield_rate:"產出率",detail_settings:"詳細設定",show_detail_settings:"顯示詳細設定",hide_detail_settings:"隱藏詳細設定",setting_values:"工程設定值",show_setting_values:"顯示工程設定值",hide_setting_values:"隱藏工程設定值",minute:"分",second:"秒",process_1:"AES運轉準備",process_2:"洗米開始／浸漬開始",process_3:"浸漬完成／充填開始",process_4:"炊飯鍋排出時間",process_5:"燜飯完成",process_6:"鬆飯完成",process_7:"完成",pot_discharge:"炊飯鍋排出時間",calc:"計算",company_setting:"客戶設定",save_company_setting:"儲存客戶設定",load_company_setting:"讀取客戶設定",delete_company_setting:"刪除客戶設定",save_standard:"儲存標準設定",load_standard:"讀取標準設定",reset:"初始值",print:"PDF／列印",csv:"CSV輸出",time_note:"節拍時間為30〜180秒選擇式。工程設定值為30秒單位選擇式。",production_summary:"生產概要",process_time:"工程時間",process:"工程",start_time:"開始時刻",end_time:"結束時刻",process_duration:"工程時間",unit:"單位",total_pots:"總鍋數",line_start:"產線開始時間",post_process_start:"後工程開始時間",last_start:"最後一鍋開始時間",final_finish:"最後完成時間",total_duration:"總所需時間",used_rice_weight:"使用精米量(kg)",estimated_total_cooked_weight:"預估炊飯總量(kg)",seasoning_settings:"調味液設定",seasoning_name:"名稱",seasoning_amount_per_pot:"添加量(g/鍋)",seasoning_required_amount:"調味液必要量(g)",rule_note:"時間為參考值。",pot_schedule:"釜別スケジュール",no:"No.",finish_time:"下一工序開始",err:"請確認輸入內容。",saved:"已儲存設定。",loaded:"已讀取設定。",deleted:"已刪除設定。"},
+zh_cn:{app_name:"炊饭时间计算APP",basic_info:"基本信息",title_field:"标题",customer_name:"客户名称",customer_list:"客户列表",save_customer:"保存",delete_customer:"删除当前客户",load:"读取",no_customer:"尚无已保存客户",input_settings:"输入设置",language:"显示语言",method:"计算方式",method_start:"从开始时间计算",method_finish:"从希望完成时间倒推",method_after_process_start:"从后工序开始时间计算",time_input:"指定时间",pot_count:"炊饭锅数",tact_time:"节拍时间",rice_weight_per_pot:"每锅精米重量",expected_yield:"出成率",yield_rate:"出成率",detail_settings:"详细设置",show_detail_settings:"显示详细设置",hide_detail_settings:"隐藏详细设置",setting_values:"工序设定值",show_setting_values:"显示工序设定值",hide_setting_values:"隐藏工序设定值",minute:"分",second:"秒",process_1:"AES运行准备",process_2:"洗米开始／浸泡开始",process_3:"浸泡完成／充填开始",process_4:"炊饭锅排出时间",process_5:"焖饭完成",process_6:"松饭完成",process_7:"完成",pot_discharge:"炊饭锅排出时间",calc:"计算",company_setting:"客户设置",save_company_setting:"保存客户设置",load_company_setting:"读取客户设置",delete_company_setting:"删除客户设置",save_standard:"保存标准设置",load_standard:"读取标准设置",reset:"初始值",print:"PDF／打印",csv:"CSV导出",time_note:"节拍时间为30〜180秒选择式。工序设定值为30秒单位选择式。",production_summary:"生产概要",process_time:"工程時間",process:"工序",start_time:"开始时刻",end_time:"结束时刻",process_duration:"工序时间",unit:"单位",total_pots:"总锅数",line_start:"产线开始时间",post_process_start:"后工序开始时间",last_start:"最后一锅开始时间",final_finish:"最后完成时间",total_duration:"总所需时间",used_rice_weight:"使用精米量(kg)",estimated_total_cooked_weight:"预计炊饭总量(kg)",seasoning_settings:"调味液设置",seasoning_name:"名称",seasoning_amount_per_pot:"添加量(g/锅)",seasoning_required_amount:"调味液必要量(g)",rule_note:"时间为参考值。",pot_schedule:"各锅排程",no:"No.",finish_time:"下一工序開始",err:"请确认输入内容。",saved:"已保存设置。",loaded:"已读取设置。",deleted:"已删除设置。"},
+en:{app_name:"Rice Cooking Time App",basic_info:"Basic Info",title_field:"Title",customer_name:"Customer Name",customer_list:"Customer List",save_customer:"Save",delete_customer:"Delete Current Customer",load:"Load",no_customer:"No saved customers",input_settings:"Input Settings",language:"Language",method:"Calculation Method",method_start:"Calculate from Start Time",method_finish:"Back-calculate from Target Finish",method_after_process_start:"Calculate from Post-process Start",time_input:"Specified Time",pot_count:"Number of Rice Cooking Pots",tact_time:"Takt Time",rice_weight_per_pot:"Polished Rice / Pot",expected_yield:"Yield",yield_rate:"Yield",detail_settings:"Detail Settings",show_detail_settings:"Show Detail Settings",hide_detail_settings:"Hide Detail Settings",setting_values:"Process Setting Values",show_setting_values:"Show Setting Values",hide_setting_values:"Hide Setting Values",minute:"min",second:"sec",process_1:"AES Preparation",process_2:"Rice Washing / Soaking Start",process_3:"Soaking Complete / Filling Start",process_4:"Rice Pot Discharge Time",process_5:"Resting Complete",process_6:"Loosening Complete",process_7:"Finish",pot_discharge:"Rice Pot Discharge Time",calc:"Calculate",company_setting:"Customer Setting",save_company_setting:"Save Customer Setting",load_company_setting:"Load Customer Setting",delete_company_setting:"Delete Customer Setting",save_standard:"Save Standard",load_standard:"Load Standard",reset:"Default",print:"PDF/Print",csv:"CSV Export",time_note:"Takt time is selectable from 30 to 180 seconds. Process setting values are selectable in 30-second steps.",production_summary:"Production Summary",process_time:"Process Time",process:"Process",start_time:"Start Time",end_time:"End Time",process_duration:"Process Time",unit:"Unit",total_pots:"Total Pots",line_start:"Production Line Start",post_process_start:"Post-process Start",last_start:"Last Pot Start",final_finish:"Final Finish",total_duration:"Total Duration",used_rice_weight:"Used Rice (kg)",estimated_total_cooked_weight:"Estimated Total Cooked Rice (kg)",seasoning_settings:"Seasoning Liquid Settings",seasoning_name:"Name",seasoning_amount_per_pot:"Amount (g/pot)",seasoning_required_amount:"Required Seasoning Liquid (g)",rule_note:"Times are reference values.",pot_schedule:"Pot Schedule",no:"No.",finish_time:"Next Process Start",err:"Please check the input values.",saved:"Setting saved.",loaded:"Setting loaded.",deleted:"Setting deleted."}
+};
+["ko","vi","th","id","fil","es"].forEach(k=>D[k]={...D.en});
+
+const processKeys=["process_1","process_2","process_3","process_4","process_5","process_6","process_7"];
+let rows=[];
+function E(id){return document.getElementById(id)}
+function L(){return E("lang").value}
+function t(k){return (D[L()]&&D[L()][k])||D.en[k]||k}
+function mod(s){return ((s%86400)+86400)%86400}
+function fmt(s){s=mod(Math.round(s));let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return sec?`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`:`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`}
+function fmtDur(s){s=Math.round(s);let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return `${h}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`}
+function parseClock(v){const [h,m]=v.split(":").map(Number);return h*3600+m*60}
+function parseDur(v){
+  v=String(v).trim();
+  if(/^\d+:\d{1,2}:\d{1,2}$/.test(v)){let [h,m,s]=v.split(":").map(Number);return h*3600+m*60+s}
+  if(/^\d+:\d{1,2}$/.test(v)){let [m,s]=v.split(":").map(Number);return m*60+s}
+  if(/^\d+$/.test(v)) return Number(v)*60;
+  return NaN;
+}
+function toHMS(sec){sec=Math.round(sec);let h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
+function num(id){return Number(E(id).value)}
+function getSeasonings(){
+  return [0,1,2].map(i=>({
+    name:(E(`seasoningName${i}`)?.value||`調味液${String.fromCharCode(65+i)}`).trim(),
+    amount:Number(E(`seasoningAmount${i}`)?.value||0)
+  }));
+}
+function renderSeasonings(pots){
+  const lines=getSeasonings().filter(x=>x.name || x.amount).map(x=>{
+    const total=Math.round((Number(x.amount)||0)*(Number(pots)||0));
+    return `${x.name||"-"} ${total.toLocaleString()}g`;
+  });
+  E("outSeasonings").innerHTML=lines.length?lines.join("<br>"):"--";
+}
+function nearest30(sec){return Math.round(sec/30)*30}
+function getTaktSec(){
+  return Number(E("taktValue").value);
+}
+function setTaktSec(sec){
+  sec=Math.round(sec);
+  if(sec<30) sec=30;
+  if(sec>180) sec=180;
+  E("taktValue").value=sec;
+}
+function getProcSec(i){
+  return Number(E(`pval${i}`).value);
+}
+function setProcSec(i,sec){
+  E(`pval${i}`).value=nearest30(sec);
+}
+function formatChoice(sec){
+  const m=Math.floor(sec/60), s=sec%60;
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function fillDurationSelect(sel, maxMin=180){
+  sel.innerHTML="";
+  for(let sec=0; sec<=maxMin*60; sec+=30){
+    const o=document.createElement("option");
+    o.value=sec;
+    o.textContent=formatChoice(sec);
+    sel.appendChild(o);
+  }
+}
+function fillTaktSelect(sel){
+  sel.innerHTML="";
+  for(let sec=30; sec<=180; sec++){
+    const o=document.createElement("option");
+    o.value=sec;
+    o.textContent=`${sec}${t("second")}`;
+    sel.appendChild(o);
+  }
+}
+function buildSelectors(){
+  fillTaktSelect(E("taktValue"));
+  E("taktValue").addEventListener("change",calc);
+  const box=E("settingRows"); box.innerHTML="";
+  processKeys.forEach((key,i)=>{
+    const row=document.createElement("div");
+    row.className="setting-row";
+    row.innerHTML=`<div class="label" data-pkey="${key}">${t(key)}</div>
+      <select id="pval${i}"></select>`;
+    box.appendChild(row);
+    const sel=row.querySelector(`#pval${i}`);
+    fillDurationSelect(sel, 180);
+    sel.addEventListener("change",calc);
+  });
+}
+function refreshSelectorLabels(){
+  document.querySelectorAll("[data-pkey]").forEach(x=>x.textContent=t(x.dataset.pkey));
+  const tv=E("taktValue").value;
+  Array.from(E("taktValue").options).forEach(o=>o.textContent=`${o.value}${t("second")}`);
+  E("taktValue").value=tv;
+}
+function updateSettingToggle(){
+  const d=E("settingDetails"), s=E("settingSummaryToggle");
+  s.textContent=d.open?t("hide_setting_values"):t("show_setting_values");
+}
+function updateDetailToggle(){
+  const d=E("detailDetails"), s=E("detailSummaryToggle");
+  s.textContent=d.open?t("hide_detail_settings"):t("show_detail_settings");
+}
+function setLang(){
+  document.querySelectorAll("[data-k]").forEach(el=>{el.textContent=t(el.dataset.k)});
+  document.querySelectorAll("[data-method-label]").forEach(o=>{o.textContent=t(o.dataset.methodLabel)});
+  refreshSelectorLabels();
+  updateSettingToggle();
+  updateDetailToggle();
+  renderCustomerList();
+  calc();
+}
+function calc(){
+  E("err").textContent="";
+  const pots=num("pots"), takt=getTaktSec(), rice=num("ricePerPot"), yieldRate=num("yieldRate");
+  const p=processKeys.map((_,i)=>getProcSec(i));
+  if(!pots||pots<1||pots>999||!Number.isFinite(takt)||takt<1||p.some(x=>!Number.isFinite(x)||x<0)||!Number.isFinite(rice)||!Number.isFinite(yieldRate)){
+    E("err").textContent=t("err"); return;
+  }
+  const specified=parseClock(E("timeInput").value);
+  const totalProc=p.reduce((a,b)=>a+b,0);
+  const method=E("method").value;
+  let start;
+  if(method==="method_start") start=specified;
+  else if(method==="method_after_process_start") start=specified-totalProc;
+  else start=specified-((pots-1)*takt+totalProc);
+  start=mod(start);
+
+  const firstFinish=mod(start+totalProc);
+  const lastLineStart=mod(start+(pots-1)*takt);
+  const lastStart=mod(lastLineStart+p[0]); // 最終釜開始時間＝最後の釜の洗米開始／浸漬開始
+  const finalFinish=mod(lastLineStart+totalProc);
+  const duration=(finalFinish-start)+(finalFinish<start?86400:0);
+  const title=E("docTitle").value||"--";
+  E("outTitle").textContent=title;
+  E("printTitle").textContent=title;
+  E("outTotalPots").textContent=pots;
+  E("outLineStart").textContent=fmt(start);
+  E("outPostStart").textContent=fmt(firstFinish);
+  E("outFinalFinish").textContent=fmt(finalFinish);
+  E("outDuration").textContent=fmtDur(duration);
+  E("outRice").textContent=Math.round(pots*rice*10)/10;
+  E("outCooked").textContent=Math.round(pots*rice*yieldRate*10)/10;
+  renderSeasonings(pots);
+
+  // 工程時間：画像の通り5項目を表示
+  E("ptLineStart").value=fmt(start);
+  E("ptPostStart").value=fmt(firstFinish);
+  E("ptLastStart").value=fmt(lastStart);
+  E("ptFinalFinish").value=fmt(finalFinish);
+  E("ptDuration").value=fmtDur(duration);
+
+  const body=E("scheduleBody"); body.innerHTML=""; rows=[];
+  for(let i=1;i<=pots;i++){
+    const lineStart=mod(start+(i-1)*takt);          // 釜開始時間（非表示）
+    const washStart=mod(lineStart+p[0]);            // 洗米開始／浸漬開始
+    const soakDone=mod(washStart+p[1]);             // 浸漬完了／充填開始
+    const fillDone=mod(soakDone+p[2]);              // 充填関連時間（非表示）
+    const potDischarge=mod(fillDone+p[3]);          // 炊飯鍋排出時間
+    const steamStart=mod(potDischarge+p[4]);        // 蒸らし開始
+    const flipperStart=mod(steamStart+p[5]);        // 反転ほぐし機開始
+    const finish=mod(flipperStart+p[6]);            // 完成
+    const arr=[i,fmt(washStart),fmt(soakDone),fmt(potDischarge),fmt(steamStart),fmt(flipperStart),fmt(finish)];
+    rows.push(arr);
+    const tr=document.createElement("tr"); tr.innerHTML=arr.map(x=>`<td>${x}</td>`).join(""); body.appendChild(tr);
+  }
+  save();
+}
+
+function getCompanySettings(){
+  try{return JSON.parse(localStorage.getItem("riceCustomerSettingsV17")||"{}")}catch(e){return {}}
+}
+function setCompanySettings(obj){
+  localStorage.setItem("riceCustomerSettingsV17", JSON.stringify(obj||{}));
+}
+function updateCompanySelect(){
+  renderCustomerList();
+}
+function renderCustomerList(){
+  const box=E("customerList");
+  if(!box) return;
+  const settings=getCompanySettings();
+  const names=Object.keys(settings).sort();
+  box.innerHTML="";
+  if(names.length===0){
+    const empty=document.createElement("div");
+    empty.className="customer-empty";
+    empty.textContent=t("no_customer");
+    box.appendChild(empty);
+    return;
+  }
+  names.forEach(name=>{
+    const item=document.createElement("div");
+    item.className="customer-item";
+    const span=document.createElement("span");
+    span.textContent=name;
+    const btn=document.createElement("button");
+    btn.type="button";
+    btn.textContent=t("load");
+    span.addEventListener("click",()=>loadCustomerByName(name));
+    btn.addEventListener("click",()=>loadCustomerByName(name));
+    item.appendChild(span);
+    item.appendChild(btn);
+    box.appendChild(item);
+  });
+}
+function companyState(){
+  return state();
+}
+function applyCompanyState(s){
+  applyState(s);
+}
+function saveCustomerSetting(){
+  const name=(E("docTitle").value||"").trim();
+  if(!name){E("err").textContent=t("customer_name")+" を入力してください。"; return;}
+  const settings=getCompanySettings();
+  settings[name]=companyState();
+  setCompanySettings(settings);
+  updateCompanySelect();
+  E("err").textContent=t("saved");
+  calc();
+}
+function loadCustomerByName(name){
+  const settings=getCompanySettings();
+  if(!name || !settings[name]) return;
+  applyCompanyState(settings[name]);
+  E("docTitle").value=name;
+  E("err").textContent=t("loaded");
+  calc();
+}
+function loadCompanySetting(){
+  const name=(E("docTitle").value||"").trim();
+  loadCustomerByName(name);
+}
+function deleteCurrentCustomerSetting(){
+  const name=(E("docTitle").value||"").trim();
+  if(!name) return;
+  const settings=getCompanySettings();
+  delete settings[name];
+  setCompanySettings(settings);
+  updateCompanySelect();
+  E("err").textContent=t("deleted");
+  calc();
+}
+function deleteCompanySetting(){
+  deleteCurrentCustomerSetting();
+}
+function state(){
+  const s={docTitle:E("docTitle").value,lang:E("lang").value,method:E("method").value,timeInput:E("timeInput").value,pots:E("pots").value,taktValue:getTaktSec(),ricePerPot:E("ricePerPot").value,yieldRate:E("yieldRate").value};
+  processKeys.forEach((_,i)=>{s[`p${i}`]=getProcSec(i)});
+  getSeasonings().forEach((x,i)=>{s[`seasoningName${i}`]=x.name;s[`seasoningAmount${i}`]=x.amount});
+  return s;
+}
+function applyState(s){
+  if(!s) return;
+  ["docTitle","lang","method","timeInput","pots","ricePerPot","yieldRate"].forEach(k=>{if(s[k]!==undefined&&E(k))E(k).value=s[k]});
+  if(s.taktValue!==undefined) setTaktSec(Number(s.taktValue));
+  if(s.taktSec!==undefined) setTaktSec(Number(s.taktSec));
+  if(s.taktTime!==undefined) setTaktSec(parseDur(s.taktTime));
+  processKeys.forEach((_,i)=>{if(s[`p${i}`]!==undefined)setProcSec(i,Number(s[`p${i}`]))});
+  [0,1,2].forEach(i=>{
+    if(s[`seasoningName${i}`]!==undefined && E(`seasoningName${i}`)) E(`seasoningName${i}`).value=s[`seasoningName${i}`];
+    if(s[`seasoningAmount${i}`]!==undefined && E(`seasoningAmount${i}`)) E(`seasoningAmount${i}`).value=s[`seasoningAmount${i}`];
+  });
+}
+function save(){localStorage.setItem("riceAppVer6State",JSON.stringify(state()));}
+function load(){try{applyState(JSON.parse(localStorage.getItem("riceAppVer6State")||"{}"))}catch(e){}}
+function saveStandard(){localStorage.setItem("riceAppVer6Standard",JSON.stringify(state()));E("err").textContent=t("saved")}
+function loadStandard(){try{applyState(JSON.parse(localStorage.getItem("riceAppVer6Standard")||"{}"));setLang();calc();E("err").textContent=t("loaded")}catch(e){}}
+function resetDefaults(){
+  applyState({docTitle:"〇〇食品",lang:"ja",method:"method_after_process_start",timeInput:"08:00",pots:"125",taktValue:90,ricePerPot:"7",yieldRate:"2.1",p0:600,p1:2400,p2:90,p3:1680,p4:1200,p5:90,p6:0,seasoningName0:"調味液A",seasoningAmount0:0,seasoningName1:"調味液B",seasoningAmount1:0,seasoningName2:"調味液C",seasoningAmount2:0});
+  setLang(); calc();
+}
+function secondsToChoice(sec){
+  sec=Number(sec)||0;
+  const m=Math.floor(sec/60), s=sec%60;
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function settingToRow(name,s){
+  const oldState=state();
+  applyState(s);
+  calc();
+  const row=[
+    name,
+    E("lang").value,
+    E("method").options[E("method").selectedIndex].textContent,
+    E("timeInput").value,
+    E("pots").value,
+    getTaktSec(),
+    E("ricePerPot").value,
+    E("yieldRate").value,
+    secondsToChoice(getProcSec(0)),
+    secondsToChoice(getProcSec(1)),
+    secondsToChoice(getProcSec(2)),
+    secondsToChoice(getProcSec(3)),
+    secondsToChoice(getProcSec(4)),
+    secondsToChoice(getProcSec(5)),
+    secondsToChoice(getProcSec(6)),
+    E("outTotalPots").textContent,
+    E("outLineStart").textContent,
+    E("outPostStart").textContent,
+    E("ptLastStart").value,
+    E("outFinalFinish").textContent,
+    E("outDuration").textContent,
+    E("outRice").textContent,
+    E("outCooked").textContent,
+    ...getSeasonings().flatMap(x=>[x.name, x.amount, Math.round((Number(x.amount)||0)*(Number(E("pots").value)||0))])
+  ];
+  applyState(oldState);
+  calc();
+  return row;
+}
+function downloadCSV(){
+  const header=[
+    t("customer_name"),
+    t("language"),
+    t("method"),
+    t("time_input"),
+    t("pot_count"),
+    t("tact_time"),
+    t("rice_weight_per_pot"),
+    t("yield_rate"),
+    t("process_1"),
+    t("process_2"),
+    t("process_3"),
+    t("process_4"),
+    t("process_5"),
+    t("process_6"),
+    t("process_7"),
+    t("total_pots"),
+    t("line_start"),
+    t("post_process_start"),
+    t("last_start"),
+    t("final_finish"),
+    t("total_duration"),
+    t("used_rice_weight"),
+    t("estimated_total_cooked_weight"),
+    `${t("seasoning_name")}1`, `${t("seasoning_amount_per_pot")}1`, `${t("seasoning_required_amount")}1`,
+    `${t("seasoning_name")}2`, `${t("seasoning_amount_per_pot")}2`, `${t("seasoning_required_amount")}2`,
+    `${t("seasoning_name")}3`, `${t("seasoning_amount_per_pot")}3`, `${t("seasoning_required_amount")}3`
+  ];
+  const settings=getCompanySettings();
+  let dataRows=[];
+  const names=Object.keys(settings).sort();
+  if(names.length>0){
+    dataRows=names.map(name=>settingToRow(name,settings[name]));
+  }else{
+    dataRows=[settingToRow(E("docTitle").value||"〇〇食品",state())];
+  }
+  const csv=[header,...dataRows].map(r=>r.map(x=>`"${String(x).replaceAll('"','""')}"`).join(",")).join("\n");
+  const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="rice_customer_settings.csv"; a.click(); URL.revokeObjectURL(a.href);
+}
+E("lang").addEventListener("change",setLang);
+E("settingDetails").addEventListener("toggle",updateSettingToggle);
+E("detailDetails").addEventListener("toggle",updateDetailToggle);
+["docTitle","method","timeInput","pots","ricePerPot","yieldRate","seasoningName0","seasoningAmount0","seasoningName1","seasoningAmount1","seasoningName2","seasoningAmount2"].forEach(id=>E(id).addEventListener("input",calc));
+
+window.addEventListener("beforeprint",()=>{
+  const d=E("detailDetails"); if(d) d.open=true;
+  const s=E("settingDetails"); if(s) s.open=true;
+  updateDetailToggle();
+  updateSettingToggle();
+});
+
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+buildSelectors();
+resetDefaults();
+updateCompanySelect();
+load();
+updateCompanySelect();
+setLang();
+calc();
+</script>
+</body>
+</html>

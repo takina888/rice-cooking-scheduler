@@ -1,0 +1,9 @@
+{
+  "name": "炊飯時間計算アプリ",
+  "short_name": "炊飯計算",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#F2F2F7",
+  "theme_color": "#007AFF",
+  "icons": []
+}
