@@ -4,7 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>炊飯時間計算アプリ</title>
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="./manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="炊飯計算">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#007AFF">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <style>
 :root{
   --bg:#F2F2F7;--card:#FFFFFF;--label:#8E8E93;--text:#1C1C1E;--line:#D1D1D6;
@@ -716,7 +722,7 @@ window.addEventListener("beforeprint",()=>{
   updateSettingToggle();
 });
 
-if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js").catch(()=>{})}
 buildSelectors();
 resetDefaults();
 updateCompanySelect();

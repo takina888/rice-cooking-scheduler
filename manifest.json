@@ -1,9 +1,25 @@
 {
-  "name": "炊飯時間計算アプリ",
+  "name": "炊飯工程計算",
   "short_name": "炊飯計算",
-  "start_url": "index.html",
+  "description": "炊飯工程の開始時間・完了時間・釜別スケジュールを計算するアプリ",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#F2F2F7",
-  "theme_color": "#007AFF",
-  "icons": []
+  "orientation": "portrait",
+  "background_color": "#faf7ee",
+  "theme_color": "#faf7ee",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
