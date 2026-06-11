@@ -99,6 +99,20 @@ input[type="time"], input[readonly]{ text-align:left !important; }
 @media print{
 #potScheduleTitle,#potScheduleSection{display:none!important;}
 }
+
+/* Ver42 iPhone label/value alignment */
+@media (max-width: 768px){
+  .row,.setting-row,.input-row,.form-row{
+    display:grid !important;
+    grid-template-columns: 150px 1fr !important;
+    align-items:center !important;
+  }
+  .row label,.setting-row label,.input-row label,.form-row label{
+    width:150px !important;
+    min-width:150px !important;
+  }
+}
+
 </style>
 </head>
 <body class="auth-locked">
