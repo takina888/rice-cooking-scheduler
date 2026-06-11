@@ -100,16 +100,30 @@ input[type="time"], input[readonly]{ text-align:left !important; }
 #potScheduleTitle,#potScheduleSection{display:none!important;}
 }
 
-/* Ver42 iPhone label/value alignment */
+/* Ver43 numeric values right aligned */
 @media (max-width: 768px){
-  .row,.setting-row,.input-row,.form-row{
-    display:grid !important;
-    grid-template-columns: 150px 1fr !important;
-    align-items:center !important;
+  input[type="number"],
+  input[type="time"],
+  .value,
+  .time-cell,
+  td.time-cell{
+    text-align:right !important;
   }
-  .row label,.setting-row label,.input-row label,.form-row label{
-    width:150px !important;
-    min-width:150px !important;
+}
+
+
+/* Ver44: time input align right on iPhone */
+@media (max-width:768px){
+  input[type="time"]{
+    text-align:right !important;
+    width:100% !important;
+    margin-left:auto !important;
+  }
+  ::-webkit-datetime-edit{
+    text-align:right !important;
+  }
+  ::-webkit-datetime-edit-fields-wrapper{
+    justify-content:flex-end !important;
   }
 }
 
