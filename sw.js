@@ -1,4 +1,4 @@
-const CACHE = 'rice-app-ver46-pwa-complete';
+const CACHE = 'rice-app-ver58-no-stopwatch-top-record';
 const ASSETS = [
   './',
   './index.html',

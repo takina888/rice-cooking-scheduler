@@ -24,9 +24,10 @@ h1{font-size:31px;line-height:1.1;margin:0;font-weight:800;letter-spacing:-.8px}
 .group-title{font-size:13px;color:var(--label);font-weight:600;margin:22px 4px 7px}
 .card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 .5px 0 rgba(0,0,0,.08)}
 .customer-list{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 .5px 0 rgba(0,0,0,.08)}
-.customer-item{min-height:46px;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:.5px solid var(--line);font-size:16px}
+.customer-item{min-height:46px;display:flex;align-items:center;gap:8px;justify-content:space-between;padding:10px 14px;border-bottom:.5px solid var(--line);font-size:16px}
+.customer-item span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .customer-item:last-child{border-bottom:0}
-.customer-item button{min-height:34px;border-radius:10px;font-size:14px;padding:0 10px;background:var(--secondary)}
+.customer-item button{min-height:34px;border-radius:10px;font-size:14px;padding:0 10px;background:var(--secondary);flex:0 0 auto}
 .customer-empty{padding:12px 14px;color:var(--label);font-size:14px}
 .row{min-height:48px;display:grid;grid-template-columns:1fr 1.25fr;gap:10px;align-items:center;padding:8px 14px;border-bottom:.5px solid var(--line)}
 .row:last-child{border-bottom:0}
@@ -50,6 +51,9 @@ summary::-webkit-details-marker{display:none}
 .setting-row{display:grid;grid-template-columns:1fr 120px;gap:8px;align-items:center;min-height:52px;padding:8px 14px;border-bottom:.5px solid var(--line)}
 .setting-row:last-child{border-bottom:0}
 .setting-row select{height:36px;border:0;background:transparent;color:var(--blue);font-size:16px;text-align:right;outline:none;direction:rtl}
+.duration-inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;align-items:center}
+.duration-inputs input{width:100%;height:36px;border:0;background:var(--secondary);border-radius:10px;color:var(--blue);font-size:16px;text-align:center;outline:none}
+.duration-inputs span{font-size:11px;color:var(--label);text-align:center;display:block;margin-top:2px}
 .tablewrap{overflow:auto;background:var(--card);border-radius:16px}
 table{width:100%;border-collapse:separate;border-spacing:0;min-width:680px}
 th,td{padding:11px 10px;border-bottom:.5px solid var(--line);font-size:14px;text-align:center;white-space:nowrap}
@@ -68,6 +72,16 @@ tr:last-child td{border-bottom:0}
 
 .print-title{display:none}
 .footer{font-size:11px;color:var(--label);text-align:center;margin-top:22px}
+
+/* Ver54: stopwatch kept / no confirm for stopwatch deletes / customer delete confirm */
+.top-status{position:sticky;top:0;z-index:50;margin:0 -12px 12px;padding:8px 12px;background:rgba(242,242,247,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:.5px solid var(--line)}
+.top-status-card{max-width:840px;margin:0 auto;background:var(--card);border-radius:16px;padding:10px 14px;box-shadow:0 .5px 0 rgba(0,0,0,.08);display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center}
+.top-status-label{font-size:12px;color:var(--label);font-weight:700;margin-bottom:3px}
+.top-status-time{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.top-status-count{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--blue);letter-spacing:-.3px;text-align:right}
+.top-status-sub{font-size:11px;color:var(--label);text-align:right;margin-top:3px}
+@media(max-width:420px){.top-status-card{grid-template-columns:1fr}.top-status-count,.top-status-sub{text-align:left}.top-status-time,.top-status-count{font-size:22px}}
+@media print{.top-status{display:none!important}}
 @media(max-width:560px){
   .app{padding:12px 10px 36px}
   h1{font-size:29px}
@@ -133,6 +147,30 @@ input[type="time"], input[readonly]{ text-align:left !important; }
   }
 }
 
+/* Ver50: stopwatch moved inside process settings */
+.file-input-hidden{display:none}
+.utility-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.stopwatch-card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 .5px 0 rgba(0,0,0,.08)}
+.stopwatch-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 14px;border-bottom:.5px solid var(--line)}
+.stopwatch-row:last-child{border-bottom:0}
+.stopwatch-name{font-size:16px;font-weight:700}
+.stopwatch-name-input{width:100%;border:0;background:transparent;font-size:16px;font-weight:700;color:var(--text);outline:none}
+.stopwatch-time{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;text-align:right;letter-spacing:-.3px}
+.stopwatch-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 14px 12px}
+.stopwatch-actions button{min-height:38px;border-radius:11px;font-size:14px;background:var(--secondary)}
+.stopwatch-actions .running{background:var(--green);color:white}
+.stopwatch-memo{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;padding:0 14px 12px}
+.stopwatch-memo select,.stopwatch-memo input{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 10px;background:var(--secondary);font-size:13px;color:var(--text)}
+.stopwatch-laps{padding:0 14px 12px;font-size:13px;color:var(--label);line-height:1.5}
+.stopwatch-laps table{width:100%;min-width:0;border-collapse:collapse;font-size:12px;background:transparent}
+.stopwatch-laps th,.stopwatch-laps td{border-top:.5px solid var(--line);padding:6px 4px;text-align:left;vertical-align:top}
+.stopwatch-laps th:last-child,.stopwatch-laps td:last-child{text-align:right;width:48px}
+.stopwatch-laps button{min-height:28px;border-radius:8px;font-size:12px;padding:3px 8px;background:var(--secondary)}
+.stopwatch-clear{padding:0 14px 14px;text-align:right}
+.stopwatch-clear button{min-height:32px;border-radius:9px;font-size:12px;background:var(--secondary)}
+@media(max-width:420px){.stopwatch-row{grid-template-columns:1fr}.stopwatch-time{text-align:left}.stopwatch-actions{grid-template-columns:1fr 1fr 1fr}.stopwatch-memo{grid-template-columns:1fr}}
+@media print{#utilitySection,#stopwatchDetails{display:none!important}}
+
 </style>
 </head>
 <body class="auth-locked">
@@ -169,6 +207,19 @@ input[type="time"], input[readonly]{ text-align:left !important; }
 </script>
 
 <div class="app">
+<div class="top-status no-print">
+  <div class="top-status-card">
+    <div>
+      <div class="top-status-label">現在時刻</div>
+      <div class="top-status-time" id="currentClock">--:--</div>
+    </div>
+    <div>
+      <div class="top-status-label" style="text-align:right">全工程終了まで</div>
+      <div class="top-status-count" id="completionCountdown">--分</div>
+      <div class="top-status-sub" id="completionTarget">終了予定 --:--</div>
+    </div>
+  </div>
+</div>
 <header>
   <h1 data-k="app_name">炊飯時間計算アプリ</h1>
 </header>
@@ -198,7 +249,7 @@ input[type="time"], input[readonly]{ text-align:left !important; }
     </div>
   </div>
 
-  <div class="group-title" data-k="customer_list">顧客一覧</div>
+  <div class="group-title" data-k="customer_list">保存済み設定</div>
   <div class="customer-list" id="customerList"></div>
 
   <div class="group-title" data-k="input_settings">入力設定</div>
@@ -238,6 +289,11 @@ input[type="time"], input[readonly]{ text-align:left !important; }
   <details id="settingDetails">
     <summary id="settingSummaryToggle" data-k="show_setting_values">工程設定値を表示</summary>
     <div id="settingRows"></div>
+    <details id="stopwatchDetails" class="no-print" style="margin-top:12px;">
+      <summary>ストップウォッチを表示</summary>
+      <div class="sub-title">ストップウォッチ（3個同時計測・工程内容選択／メモ記録）</div>
+      <div class="stopwatch-card" id="stopwatchBox"></div>
+    </details>
   </details>
 
   <div class="btns">
@@ -245,10 +301,13 @@ input[type="time"], input[readonly]{ text-align:left !important; }
     <button onclick="deleteCurrentCustomerSetting()" data-k="delete_customer">現在の顧客を削除</button>
     <button onclick="window.print()" data-k="print">PDF/印刷</button>
     <button onclick="downloadCSV()" data-k="csv">CSV出力</button>
+    <button onclick="document.getElementById('csvImportFile').click()">CSV読込</button>
   </div>
+  <input id="csvImportFile" class="file-input-hidden" type="file" accept=".csv,text/csv">
   <div id="err" class="error"></div>
-  <div class="note no-print" data-k="time_note">工程設定値は分と秒を選択します。タクト時間は 00:01:30 のように入力できます。70秒は 00:01:10 です。</div>
+  <div class="note no-print" data-k="time_note">工程設定値は1秒単位で変更できます。CSV出力・CSV読込も秒単位の値を保持します。</div>
 </section>
+
 
 <div class="group-title" data-k="production_summary">生産概要</div>
 <section class="summary">
@@ -315,22 +374,22 @@ input[type="time"], input[readonly]{ text-align:left !important; }
 
 <script>
 const D={
-ja:{app_name:"炊飯時間計算アプリ",basic_info:"基本情報",title_field:"タイトル",customer_name:"顧客名",customer_list:"顧客一覧",save_customer:"保存",delete_customer:"現在の顧客を削除",load:"読込",no_customer:"保存済み顧客はありません",input_settings:"入力設定",language:"表示言語",method:"計算方式",method_start:"開始時間から計算",method_finish:"完了希望時間から逆算",method_after_process_start:"後工程開始時間から計算",time_input:"指定時間",pot_count:"炊飯鍋数",tact_time:"タクト時間",rice_weight_per_pot:"精米重量／釜",expected_yield:"歩留まり",yield_rate:"歩留まり",detail_settings:"詳細設定",show_detail_settings:"詳細設定を表示",hide_detail_settings:"詳細設定を隠す",setting_values:"工程設定値",show_setting_values:"工程設定値を表示",hide_setting_values:"工程設定値を隠す",minute:"分",second:"秒",process_1:"AES運転準備",process_2:"洗米開始／浸漬開始",process_3:"浸漬完了／浸漬完了／充填開始",process_4:"炊飯鍋排出時間",process_5:"蒸らし完了",process_6:"ほぐし完了",process_7:"完了",pot_discharge:"炊飯鍋排出時間",calc:"計算",company_setting:"顧客設定",save_company_setting:"顧客設定保存",load_company_setting:"顧客設定読込",delete_company_setting:"顧客設定削除",save_standard:"標準設定保存",load_standard:"標準設定読込",reset:"初期値",print:"PDF/印刷",csv:"CSV出力",time_note:"タクト時間は30〜180秒の選択式です。工程設定値は30秒単位の選択式です。",production_summary:"生産概要",process_time:"工程時間",production_process_summary:"生産概要（工程時間）",process_4_summary:"炊飯投入開始",process_5_summary:"蒸らし完了",process_6_summary:"反転ほぐし機反転開始",process_7_summary:"炊飯完了",process:"工程",start_time:"開始時刻",end_time:"終了時刻",process_duration:"工程時間",unit:"単位",total_pots:"総釜数",line_start:"生産ライン開始時間",post_process_start:"後工程開始時間",last_start:"最終鍋開始時間",final_finish:"最終完了時間",total_duration:"総所要時間",used_rice_weight:"使用精米量(kg)",estimated_total_cooked_weight:"想定炊飯総量(kg)",seasoning_settings:"調味液設定",seasoning_name:"名称",seasoning_amount_per_pot:"添加量(g/釜)",seasoning_required_amount:"調味液必要量(g)",rule_note:"時間は参考値です。",pot_schedule:"釜別スケジュール",no:"No.",finish_time:"次工程開始",schedule_wash:"洗米開始／浸漬開始",schedule_fill:"浸漬完了／充填開始",schedule_cook:"炊飯鍋排出時間",schedule_steam:"蒸らし完了",schedule_loosen:"ほぐし完了",err:"入力内容を確認してください。",saved:"設定を保存しました。",loaded:"設定を読み込みました。",deleted:"設定を削除しました。"},
-zh_tw:{app_name:"炊飯時間計算APP",basic_info:"基本資訊",title_field:"標題",customer_name:"客戶名稱",customer_list:"客戶列表",save_customer:"儲存",delete_customer:"刪除目前客戶",load:"讀取",no_customer:"尚無已儲存客戶",input_settings:"輸入設定",language:"顯示語言",method:"計算方式",method_start:"由開始時間計算",method_finish:"由希望完成時間逆算",method_after_process_start:"由後工程開始時間計算",time_input:"指定時間",pot_count:"炊飯鍋數",tact_time:"節拍時間",rice_weight_per_pot:"每鍋精米重量",expected_yield:"產出率",yield_rate:"產出率",detail_settings:"詳細設定",show_detail_settings:"顯示詳細設定",hide_detail_settings:"隱藏詳細設定",setting_values:"工程設定值",show_setting_values:"顯示工程設定值",hide_setting_values:"隱藏工程設定值",minute:"分",second:"秒",process_1:"AES運轉準備",process_2:"洗米開始／浸漬開始",process_3:"浸漬完成／浸漬完了／充填開始",process_4:"炊飯鍋排出時間",process_5:"燜飯完成",process_6:"鬆飯完成",process_7:"完成",pot_discharge:"炊飯鍋排出時間",calc:"計算",company_setting:"客戶設定",save_company_setting:"儲存客戶設定",load_company_setting:"讀取客戶設定",delete_company_setting:"刪除客戶設定",save_standard:"儲存標準設定",load_standard:"讀取標準設定",reset:"初始值",print:"PDF／列印",csv:"CSV輸出",time_note:"節拍時間為30〜180秒選擇式。工程設定值為30秒單位選擇式。",production_summary:"生產概要",process_time:"工程時間",production_process_summary:"生產概要（工程時間）",process_4_summary:"炊飯投入開始",process_5_summary:"燜飯開始",process_6_summary:"鬆飯機反轉開始",process_7_summary:"炊飯完成",process:"工程",start_time:"開始時刻",end_time:"結束時刻",process_duration:"工程時間",unit:"單位",total_pots:"總鍋數",line_start:"產線開始時間",post_process_start:"後工程開始時間",last_start:"最後一鍋開始時間",final_finish:"最後完成時間",total_duration:"總所需時間",used_rice_weight:"使用精米量(kg)",estimated_total_cooked_weight:"預估炊飯總量(kg)",seasoning_settings:"調味液設定",seasoning_name:"名稱",seasoning_amount_per_pot:"添加量(g/鍋)",seasoning_required_amount:"調味液必要量(g)",rule_note:"時間為參考值。",pot_schedule:"釜別スケジュール",no:"No.",finish_time:"下一工序開始",err:"請確認輸入內容。",saved:"已儲存設定。",loaded:"已讀取設定。",deleted:"已刪除設定。"},
-zh_cn:{app_name:"炊饭时间计算APP",basic_info:"基本信息",title_field:"标题",customer_name:"客户名称",customer_list:"客户列表",save_customer:"保存",delete_customer:"删除当前客户",load:"读取",no_customer:"尚无已保存客户",input_settings:"输入设置",language:"显示语言",method:"计算方式",method_start:"从开始时间计算",method_finish:"从希望完成时间倒推",method_after_process_start:"从后工序开始时间计算",time_input:"指定时间",pot_count:"炊饭锅数",tact_time:"节拍时间",rice_weight_per_pot:"每锅精米重量",expected_yield:"出成率",yield_rate:"出成率",detail_settings:"详细设置",show_detail_settings:"显示详细设置",hide_detail_settings:"隐藏详细设置",setting_values:"工序设定值",show_setting_values:"显示工序设定值",hide_setting_values:"隐藏工序设定值",minute:"分",second:"秒",process_1:"AES运行准备",process_2:"洗米开始／浸泡开始",process_3:"浸泡完成／充填开始",process_4:"炊饭锅排出时间",process_5:"焖饭完成",process_6:"松饭完成",process_7:"完成",pot_discharge:"炊饭锅排出时间",calc:"计算",company_setting:"客户设置",save_company_setting:"保存客户设置",load_company_setting:"读取客户设置",delete_company_setting:"删除客户设置",save_standard:"保存标准设置",load_standard:"读取标准设置",reset:"初始值",print:"PDF／打印",csv:"CSV导出",time_note:"节拍时间为30〜180秒选择式。工序设定值为30秒单位选择式。",production_summary:"生产概要",process_time:"工程时间",production_process_summary:"生产概要（工程时间）",process_4_summary:"炊饭投入开始",process_5_summary:"焖饭开始",process_6_summary:"松饭机反转开始",process_7_summary:"炊饭完成",process:"工序",start_time:"开始时刻",end_time:"结束时刻",process_duration:"工序时间",unit:"单位",total_pots:"总锅数",line_start:"产线开始时间",post_process_start:"后工序开始时间",last_start:"最后一锅开始时间",final_finish:"最后完成时间",total_duration:"总所需时间",used_rice_weight:"使用精米量(kg)",estimated_total_cooked_weight:"预计炊饭总量(kg)",seasoning_settings:"调味液设置",seasoning_name:"名称",seasoning_amount_per_pot:"添加量(g/锅)",seasoning_required_amount:"调味液必要量(g)",rule_note:"时间为参考值。",pot_schedule:"各锅排程",no:"No.",finish_time:"下一工序開始",err:"请确认输入内容。",saved:"已保存设置。",loaded:"已读取设置。",deleted:"已删除设置。"},
-en:{app_name:"Rice Cooking Time App",basic_info:"Basic Info",title_field:"Title",customer_name:"Customer Name",customer_list:"Customer List",save_customer:"Save",delete_customer:"Delete Current Customer",load:"Load",no_customer:"No saved customers",input_settings:"Input Settings",language:"Language",method:"Calculation Method",method_start:"Calculate from Start Time",method_finish:"Back-calculate from Target Finish",method_after_process_start:"Calculate from Post-process Start",time_input:"Specified Time",pot_count:"Number of Rice Cooking Pots",tact_time:"Takt Time",rice_weight_per_pot:"Polished Rice / Pot",expected_yield:"Yield",yield_rate:"Yield",detail_settings:"Detail Settings",show_detail_settings:"Show Detail Settings",hide_detail_settings:"Hide Detail Settings",setting_values:"Process Setting Values",show_setting_values:"Show Setting Values",hide_setting_values:"Hide Setting Values",minute:"min",second:"sec",process_1:"AES Preparation",process_2:"Rice Washing / Soaking Start",process_3:"Soaking Complete / Filling Start",process_4:"Rice Pot Discharge Time",process_5:"Resting Complete",process_6:"Loosening Complete",process_7:"Finish",pot_discharge:"Rice Pot Discharge Time",calc:"Calculate",company_setting:"Customer Setting",save_company_setting:"Save Customer Setting",load_company_setting:"Load Customer Setting",delete_company_setting:"Delete Customer Setting",save_standard:"Save Standard",load_standard:"Load Standard",reset:"Default",print:"PDF/Print",csv:"CSV Export",time_note:"Takt time is selectable from 30 to 180 seconds. Process setting values are selectable in 30-second steps.",production_summary:"Production Summary",process_time:"Process Time",production_process_summary:"Production Summary (Process Time)",process_4_summary:"Rice Cooking Input Start",process_5_summary:"Resting Start",process_6_summary:"Loosening Machine Reverse Start",process_7_summary:"Rice Cooking Complete",process:"Process",start_time:"Start Time",end_time:"End Time",process_duration:"Process Time",unit:"Unit",total_pots:"Total Pots",line_start:"Production Line Start",post_process_start:"Post-process Start",last_start:"Last Pot Start",final_finish:"Final Finish",total_duration:"Total Duration",used_rice_weight:"Used Rice (kg)",estimated_total_cooked_weight:"Estimated Total Cooked Rice (kg)",seasoning_settings:"Seasoning Liquid Settings",seasoning_name:"Name",seasoning_amount_per_pot:"Amount (g/pot)",seasoning_required_amount:"Required Seasoning Liquid (g)",rule_note:"Times are reference values.",pot_schedule:"Pot Schedule",no:"No.",finish_time:"Next Process Start",err:"Please check the input values.",saved:"Setting saved.",loaded:"Setting loaded.",deleted:"Setting deleted."}
+ja:{app_name:"炊飯時間計算アプリ",basic_info:"基本情報",title_field:"タイトル",customer_name:"顧客名",customer_list:"保存済み設定",save_customer:"設定を保存",delete_customer:"保存済み設定を削除",load:"読込",no_customer:"保存済み設定はありません",input_settings:"入力設定",language:"表示言語",method:"計算方式",method_start:"開始時間から計算",method_finish:"完了希望時間から逆算",method_after_process_start:"後工程開始時間から計算",time_input:"指定時間",pot_count:"炊飯鍋数",tact_time:"タクト時間",rice_weight_per_pot:"精米重量／釜",expected_yield:"歩留まり",yield_rate:"歩留まり",detail_settings:"詳細設定",show_detail_settings:"詳細設定を表示",hide_detail_settings:"詳細設定を隠す",setting_values:"工程設定値",show_setting_values:"工程設定値を表示",hide_setting_values:"工程設定値を隠す",minute:"分",second:"秒",process_1:"AES運転準備",process_2:"洗米開始／浸漬開始",process_3:"浸漬完了／浸漬完了／充填開始",process_4:"炊飯鍋排出時間",process_5:"蒸らし完了",process_6:"ほぐし完了",process_7:"完了",pot_discharge:"炊飯鍋排出時間",calc:"計算",company_setting:"顧客設定",save_company_setting:"顧客設定保存",load_company_setting:"顧客設定読込",delete_company_setting:"顧客設定削除",save_standard:"標準設定保存",load_standard:"標準設定読込",reset:"初期値",print:"PDF/印刷",csv:"CSV出力",time_note:"タクト時間は30〜180秒の選択式です。工程設定値は1秒単位で変更できます。",production_summary:"生産概要",process_time:"工程時間",production_process_summary:"生産概要（工程時間）",process_4_summary:"炊飯投入開始",process_5_summary:"蒸らし完了",process_6_summary:"反転ほぐし機反転開始",process_7_summary:"炊飯完了",process:"工程",start_time:"開始時刻",end_time:"終了時刻",process_duration:"工程時間",unit:"単位",total_pots:"総釜数",line_start:"生産ライン開始時間",post_process_start:"後工程開始時間",last_start:"最終鍋開始時間",final_finish:"最終完了時間",total_duration:"総所要時間",used_rice_weight:"使用精米量(kg)",estimated_total_cooked_weight:"想定炊飯総量(kg)",seasoning_settings:"調味液設定",seasoning_name:"名称",seasoning_amount_per_pot:"添加量(g/釜)",seasoning_required_amount:"調味液必要量(g)",rule_note:"時間は参考値です。",pot_schedule:"釜別スケジュール",no:"No.",finish_time:"次工程開始",schedule_wash:"洗米開始／浸漬開始",schedule_fill:"浸漬完了／充填開始",schedule_cook:"炊飯鍋排出時間",schedule_steam:"蒸らし完了",schedule_loosen:"ほぐし完了",err:"入力内容を確認してください。",saved:"設定を保存しました。",loaded:"設定を読み込みました。",deleted:"設定を削除しました。"},
+zh_tw:{app_name:"炊飯時間計算APP",basic_info:"基本資訊",title_field:"標題",customer_name:"客戶名稱",customer_list:"已儲存設定",save_customer:"儲存設定",delete_customer:"刪除已儲存設定",load:"讀取",no_customer:"尚無已儲存設定",input_settings:"輸入設定",language:"顯示語言",method:"計算方式",method_start:"由開始時間計算",method_finish:"由希望完成時間逆算",method_after_process_start:"由後工程開始時間計算",time_input:"指定時間",pot_count:"炊飯鍋數",tact_time:"節拍時間",rice_weight_per_pot:"每鍋精米重量",expected_yield:"產出率",yield_rate:"產出率",detail_settings:"詳細設定",show_detail_settings:"顯示詳細設定",hide_detail_settings:"隱藏詳細設定",setting_values:"工程設定值",show_setting_values:"顯示工程設定值",hide_setting_values:"隱藏工程設定值",minute:"分",second:"秒",process_1:"AES運轉準備",process_2:"洗米開始／浸漬開始",process_3:"浸漬完成／浸漬完了／充填開始",process_4:"炊飯鍋排出時間",process_5:"燜飯完成",process_6:"鬆飯完成",process_7:"完成",pot_discharge:"炊飯鍋排出時間",calc:"計算",company_setting:"客戶設定",save_company_setting:"儲存客戶設定",load_company_setting:"讀取客戶設定",delete_company_setting:"刪除客戶設定",save_standard:"儲存標準設定",load_standard:"讀取標準設定",reset:"初始值",print:"PDF／列印",csv:"CSV輸出",time_note:"節拍時間為30〜180秒選擇式。工程設定值可用1秒單位調整。",production_summary:"生產概要",process_time:"工程時間",production_process_summary:"生產概要（工程時間）",process_4_summary:"炊飯投入開始",process_5_summary:"燜飯開始",process_6_summary:"鬆飯機反轉開始",process_7_summary:"炊飯完成",process:"工程",start_time:"開始時刻",end_time:"結束時刻",process_duration:"工程時間",unit:"單位",total_pots:"總鍋數",line_start:"產線開始時間",post_process_start:"後工程開始時間",last_start:"最後一鍋開始時間",final_finish:"最後完成時間",total_duration:"總所需時間",used_rice_weight:"使用精米量(kg)",estimated_total_cooked_weight:"預估炊飯總量(kg)",seasoning_settings:"調味液設定",seasoning_name:"名稱",seasoning_amount_per_pot:"添加量(g/鍋)",seasoning_required_amount:"調味液必要量(g)",rule_note:"時間為參考值。",pot_schedule:"釜別スケジュール",no:"No.",finish_time:"下一工序開始",err:"請確認輸入內容。",saved:"已儲存設定。",loaded:"已讀取設定。",deleted:"已刪除設定。"},
+zh_cn:{app_name:"炊饭时间计算APP",basic_info:"基本信息",title_field:"标题",customer_name:"客户名称",customer_list:"已保存设置",save_customer:"設定を保存",delete_customer:"删除已保存设置",load:"读取",no_customer:"尚无已保存设置",input_settings:"输入设置",language:"显示语言",method:"计算方式",method_start:"从开始时间计算",method_finish:"从希望完成时间倒推",method_after_process_start:"从后工序开始时间计算",time_input:"指定时间",pot_count:"炊饭锅数",tact_time:"节拍时间",rice_weight_per_pot:"每锅精米重量",expected_yield:"出成率",yield_rate:"出成率",detail_settings:"详细设置",show_detail_settings:"显示详细设置",hide_detail_settings:"隐藏详细设置",setting_values:"工序设定值",show_setting_values:"显示工序设定值",hide_setting_values:"隐藏工序设定值",minute:"分",second:"秒",process_1:"AES运行准备",process_2:"洗米开始／浸泡开始",process_3:"浸泡完成／充填开始",process_4:"炊饭锅排出时间",process_5:"焖饭完成",process_6:"松饭完成",process_7:"完成",pot_discharge:"炊饭锅排出时间",calc:"计算",company_setting:"客户设置",save_company_setting:"保存客户设置",load_company_setting:"读取客户设置",delete_company_setting:"删除客户设置",save_standard:"保存标准设置",load_standard:"读取标准设置",reset:"初始值",print:"PDF／打印",csv:"CSV导出",time_note:"节拍时间为30〜180秒选择式。工序设定值可按1秒单位调整。",production_summary:"生产概要",process_time:"工程时间",production_process_summary:"生产概要（工程时间）",process_4_summary:"炊饭投入开始",process_5_summary:"焖饭开始",process_6_summary:"松饭机反转开始",process_7_summary:"炊饭完成",process:"工序",start_time:"开始时刻",end_time:"结束时刻",process_duration:"工序时间",unit:"单位",total_pots:"总锅数",line_start:"产线开始时间",post_process_start:"后工序开始时间",last_start:"最后一锅开始时间",final_finish:"最后完成时间",total_duration:"总所需时间",used_rice_weight:"使用精米量(kg)",estimated_total_cooked_weight:"预计炊饭总量(kg)",seasoning_settings:"调味液设置",seasoning_name:"名称",seasoning_amount_per_pot:"添加量(g/锅)",seasoning_required_amount:"调味液必要量(g)",rule_note:"时间为参考值。",pot_schedule:"各锅排程",no:"No.",finish_time:"下一工序開始",err:"请确认输入内容。",saved:"已保存设置。",loaded:"已读取设置。",deleted:"已删除设置。"},
+en:{app_name:"Rice Cooking Time App",basic_info:"Basic Info",title_field:"Title",customer_name:"Customer Name",customer_list:"Saved Settings",save_customer:"Save Setting",delete_customer:"Delete Saved Setting",load:"Load",no_customer:"No saved settings",input_settings:"Input Settings",language:"Language",method:"Calculation Method",method_start:"Calculate from Start Time",method_finish:"Back-calculate from Target Finish",method_after_process_start:"Calculate from Post-process Start",time_input:"Specified Time",pot_count:"Number of Rice Cooking Pots",tact_time:"Takt Time",rice_weight_per_pot:"Polished Rice / Pot",expected_yield:"Yield",yield_rate:"Yield",detail_settings:"Detail Settings",show_detail_settings:"Show Detail Settings",hide_detail_settings:"Hide Detail Settings",setting_values:"Process Setting Values",show_setting_values:"Show Setting Values",hide_setting_values:"Hide Setting Values",minute:"min",second:"sec",process_1:"AES Preparation",process_2:"Rice Washing / Soaking Start",process_3:"Soaking Complete / Filling Start",process_4:"Rice Pot Discharge Time",process_5:"Resting Complete",process_6:"Loosening Complete",process_7:"Finish",pot_discharge:"Rice Pot Discharge Time",calc:"Calculate",company_setting:"Customer Setting",save_company_setting:"Save Customer Setting",load_company_setting:"Load Customer Setting",delete_company_setting:"Delete Customer Setting",save_standard:"Save Standard",load_standard:"Load Standard",reset:"Default",print:"PDF/Print",csv:"CSV Export",time_note:"Takt time is selectable from 30 to 180 seconds. Process setting values can be adjusted in 1-second units.",production_summary:"Production Summary",process_time:"Process Time",production_process_summary:"Production Summary (Process Time)",process_4_summary:"Rice Cooking Input Start",process_5_summary:"Resting Start",process_6_summary:"Loosening Machine Reverse Start",process_7_summary:"Rice Cooking Complete",process:"Process",start_time:"Start Time",end_time:"End Time",process_duration:"Process Time",unit:"Unit",total_pots:"Total Pots",line_start:"Production Line Start",post_process_start:"Post-process Start",last_start:"Last Pot Start",final_finish:"Final Finish",total_duration:"Total Duration",used_rice_weight:"Used Rice (kg)",estimated_total_cooked_weight:"Estimated Total Cooked Rice (kg)",seasoning_settings:"Seasoning Liquid Settings",seasoning_name:"Name",seasoning_amount_per_pot:"Amount (g/pot)",seasoning_required_amount:"Required Seasoning Liquid (g)",rule_note:"Times are reference values.",pot_schedule:"Pot Schedule",no:"No.",finish_time:"Next Process Start",err:"Please check the input values.",saved:"Setting saved.",loaded:"Setting loaded.",deleted:"Setting deleted."}
 };
 /* Ver29 replace English-copy language fallback */
 D.ja=Object.assign({}, D.en, D.ja||{}, {"process_1": "AES運転準備", "process_2": "洗米・浸漬", "process_3": "充填", "process_4": "炊飯（炊飯機内）", "process_5": "蒸らし", "process_6": "ほぐし", "process_7": "炊飯完了／後工程開始", "process_4_summary": "炊飯（炊飯機内）", "process_5_summary": "蒸らし", "process_6_summary": "ほぐし", "process_7_summary": "炊飯完了／後工程開始"});
 D.zh_tw=Object.assign({}, D.en, D.zh_tw||{}, {"process_1": "AES運轉準備", "process_2": "洗米・浸漬", "process_3": "充填", "process_4": "炊飯（炊飯機內）", "process_5": "燜飯", "process_6": "鬆飯", "process_7": "炊飯完成／後工程開始", "process_4_summary": "炊飯（炊飯機內）", "process_5_summary": "燜飯", "process_6_summary": "鬆飯", "process_7_summary": "炊飯完成／後工程開始"});
 D.zh_cn=Object.assign({}, D.en, D.zh_cn||{}, {"process_1": "AES运行准备", "process_2": "洗米・浸泡", "process_3": "充填", "process_4": "炊饭（炊饭机内）", "process_5": "焖饭", "process_6": "松饭", "process_7": "炊饭完成／后工序开始", "process_4_summary": "炊饭（炊饭机内）", "process_5_summary": "焖饭", "process_6_summary": "松饭", "process_7_summary": "炊饭完成／后工序开始"});
 D.en=Object.assign({}, D.en, D.en||{}, {"process_1": "AES operation preparation", "process_2": "Washing / soaking", "process_3": "Filling", "process_4": "Rice cooking (in cooker)", "process_5": "Resting", "process_6": "Loosening", "process_7": "Rice cooking complete / post-process start", "process_4_summary": "Rice cooking (in cooker)", "process_5_summary": "Resting", "process_6_summary": "Loosening", "process_7_summary": "Rice cooking complete / post-process start"});
-D.ko=Object.assign({}, D.en, D.ko||{}, {"app_name": "취반 시간 계산 앱", "basic_info": "기본 정보", "title_field": "제목", "customer_name": "고객명", "customer_list": "고객 목록", "save_customer": "저장", "delete_customer": "현재 고객 삭제", "load": "불러오기", "no_customer": "저장된 고객이 없습니다", "input_settings": "입력 설정", "language": "표시 언어", "method": "계산 방식", "method_start": "시작 시간 기준 계산", "method_finish": "희망 완료 시간 기준 역산", "method_after_process_start": "후공정 시작 시간 기준 계산", "time_input": "지정 시간", "pot_count": "취반 솥 수", "tact_time": "택트 시간", "rice_weight_per_pot": "정미 중량／솥", "expected_yield": "수율", "yield_rate": "수율", "detail_settings": "상세 설정", "show_detail_settings": "상세 설정 표시", "hide_detail_settings": "상세 설정 숨기기", "setting_values": "공정 설정값", "show_setting_values": "공정 설정값 표시", "hide_setting_values": "공정 설정값 숨기기", "minute": "분", "second": "초", "process_1": "AES 운전 준비", "process_2": "세미・침지", "process_3": "충전", "process_4": "취반（취반기 내）", "process_5": "뜸들이기", "process_6": "풀기", "process_7": "취반 완료／후공정 시작", "pot_discharge": "취반 솥 배출 시간", "calc": "계산", "company_setting": "고객 설정", "save_company_setting": "고객 설정 저장", "load_company_setting": "고객 설정 불러오기", "delete_company_setting": "고객 설정 삭제", "save_standard": "표준 설정 저장", "load_standard": "표준 설정 불러오기", "reset": "초기값", "print": "PDF/인쇄", "csv": "CSV 출력", "time_note": "택트 시간은 30〜180초 선택식입니다. 공정 설정값은 30초 단위 선택식입니다.", "production_summary": "생산 개요", "process_time": "공정 시간", "production_process_summary": "생산 개요（공정 시간）", "process_4_summary": "취반（취반기 내）", "process_5_summary": "뜸들이기", "process_6_summary": "풀기", "process_7_summary": "취반 완료／후공정 시작", "process": "공정", "start_time": "시작 시각", "end_time": "종료 시각", "process_duration": "공정 시간", "unit": "단위", "total_pots": "총 솥 수", "line_start": "생산 라인 시작 시간", "post_process_start": "후공정 시작 시간", "last_start": "마지막 솥 시작 시간", "final_finish": "최종 완료 시간", "total_duration": "총 소요 시간", "used_rice_weight": "사용 정미량(kg)", "estimated_total_cooked_weight": "예상 취반 총량(kg)", "seasoning_settings": "조미액 설정", "seasoning_name": "명칭", "seasoning_amount_per_pot": "첨가량(g/솥)", "seasoning_required_amount": "조미액 필요량(g)", "rule_note": "시간은 참고값입니다.", "pot_schedule": "솥별 스케줄", "no": "No.", "finish_time": "다음 공정 시작", "err": "입력 내용을 확인해 주세요.", "saved": "설정을 저장했습니다.", "loaded": "설정을 불러왔습니다.", "deleted": "설정을 삭제했습니다."});
-D.vi=Object.assign({}, D.en, D.vi||{}, {"app_name": "Ứng dụng tính thời gian nấu cơm", "basic_info": "Thông tin cơ bản", "customer_name": "Tên khách hàng", "customer_list": "Danh sách khách hàng", "save_customer": "Lưu", "delete_customer": "Xóa khách hàng hiện tại", "load": "Tải", "no_customer": "Chưa có khách hàng đã lưu", "input_settings": "Cài đặt nhập liệu", "language": "Ngôn ngữ hiển thị", "method": "Phương pháp tính", "method_start": "Tính từ thời gian bắt đầu", "method_finish": "Tính ngược từ thời gian hoàn thành mong muốn", "method_after_process_start": "Tính từ thời gian bắt đầu công đoạn sau", "time_input": "Thời gian chỉ định", "pot_count": "Số nồi nấu cơm", "tact_time": "Thời gian takt", "rice_weight_per_pot": "Gạo trắng／nồi", "expected_yield": "Tỷ lệ thành phẩm", "yield_rate": "Tỷ lệ thành phẩm", "detail_settings": "Cài đặt chi tiết", "show_detail_settings": "Hiển thị cài đặt chi tiết", "hide_detail_settings": "Ẩn cài đặt chi tiết", "setting_values": "Giá trị cài đặt công đoạn", "show_setting_values": "Hiển thị giá trị cài đặt", "hide_setting_values": "Ẩn giá trị cài đặt", "minute": "phút", "second": "giây", "process_1": "Chuẩn bị vận hành AES", "process_2": "Rửa gạo・ngâm", "process_3": "Nạp liệu", "process_4": "Nấu cơm（trong máy nấu）", "process_5": "Ủ cơm", "process_6": "Đánh tơi", "process_7": "Hoàn tất nấu cơm／bắt đầu công đoạn sau", "pot_discharge": "Thời gian xả nồi cơm", "calc": "Tính", "company_setting": "Cài đặt khách hàng", "save_company_setting": "Lưu cài đặt khách hàng", "load_company_setting": "Tải cài đặt khách hàng", "delete_company_setting": "Xóa cài đặt khách hàng", "save_standard": "Lưu cài đặt chuẩn", "load_standard": "Tải cài đặt chuẩn", "reset": "Giá trị ban đầu", "print": "PDF/In", "csv": "Xuất CSV", "time_note": "Thời gian takt chọn từ 30〜180 giây. Giá trị cài đặt công đoạn chọn theo đơn vị 30 giây.", "production_summary": "Tổng quan sản xuất", "process_time": "Thời gian công đoạn", "production_process_summary": "Tổng quan sản xuất（thời gian công đoạn）", "process_4_summary": "Nấu cơm（trong máy nấu）", "process_5_summary": "Ủ cơm", "process_6_summary": "Đánh tơi", "process_7_summary": "Hoàn tất nấu cơm／bắt đầu công đoạn sau", "process": "Công đoạn", "start_time": "Thời gian bắt đầu", "end_time": "Thời gian kết thúc", "process_duration": "Thời gian công đoạn", "unit": "Đơn vị", "total_pots": "Tổng số nồi", "line_start": "Thời gian bắt đầu dây chuyền", "post_process_start": "Thời gian bắt đầu công đoạn sau", "last_start": "Thời gian bắt đầu nồi cuối", "final_finish": "Thời gian hoàn thành cuối", "total_duration": "Tổng thời gian", "used_rice_weight": "Lượng gạo sử dụng(kg)", "estimated_total_cooked_weight": "Tổng lượng cơm dự kiến(kg)", "seasoning_settings": "Cài đặt dung dịch gia vị", "seasoning_name": "Tên", "seasoning_amount_per_pot": "Lượng thêm(g/nồi)", "seasoning_required_amount": "Lượng dung dịch gia vị cần thiết(g)", "rule_note": "Thời gian là giá trị tham khảo.", "pot_schedule": "Lịch từng nồi", "no": "No.", "finish_time": "Bắt đầu công đoạn sau", "err": "Vui lòng kiểm tra nội dung nhập.", "saved": "Đã lưu cài đặt.", "loaded": "Đã tải cài đặt.", "deleted": "Đã xóa cài đặt."});
-D.th=Object.assign({}, D.en, D.th||{}, {"app_name": "แอปคำนวณเวลาหุงข้าว", "basic_info": "ข้อมูลพื้นฐาน", "customer_name": "ชื่อลูกค้า", "customer_list": "รายชื่อลูกค้า", "save_customer": "บันทึก", "delete_customer": "ลบลูกค้าปัจจุบัน", "load": "โหลด", "no_customer": "ยังไม่มีลูกค้าที่บันทึกไว้", "input_settings": "การตั้งค่าข้อมูลเข้า", "language": "ภาษาที่แสดง", "method": "วิธีคำนวณ", "method_start": "คำนวณจากเวลาเริ่ม", "method_finish": "คำนวณย้อนจากเวลาที่ต้องการให้เสร็จ", "method_after_process_start": "คำนวณจากเวลาเริ่มกระบวนการถัดไป", "time_input": "เวลาที่กำหนด", "pot_count": "จำนวนหม้อหุง", "tact_time": "เวลาแท็กต์", "rice_weight_per_pot": "ข้าวสาร／หม้อ", "expected_yield": "อัตราผลผลิต", "yield_rate": "อัตราผลผลิต", "detail_settings": "การตั้งค่ารายละเอียด", "show_detail_settings": "แสดงการตั้งค่ารายละเอียด", "hide_detail_settings": "ซ่อนการตั้งค่ารายละเอียด", "setting_values": "ค่าตั้งกระบวนการ", "show_setting_values": "แสดงค่าตั้งกระบวนการ", "hide_setting_values": "ซ่อนค่าตั้งกระบวนการ", "minute": "นาที", "second": "วินาที", "process_1": "เตรียมการเดินเครื่อง AES", "process_2": "ล้างข้าว・แช่ข้าว", "process_3": "เติมข้าว", "process_4": "หุงข้าว（ในเครื่องหุง）", "process_5": "พักข้าว", "process_6": "คลายข้าว", "process_7": "หุงข้าวเสร็จ／เริ่มกระบวนการถัดไป", "pot_discharge": "เวลาปล่อยหม้อหุง", "calc": "คำนวณ", "company_setting": "การตั้งค่าลูกค้า", "save_company_setting": "บันทึกการตั้งค่าลูกค้า", "load_company_setting": "โหลดการตั้งค่าลูกค้า", "delete_company_setting": "ลบการตั้งค่าลูกค้า", "save_standard": "บันทึกค่ามาตรฐาน", "load_standard": "โหลดค่ามาตรฐาน", "reset": "ค่าเริ่มต้น", "print": "PDF/พิมพ์", "csv": "ส่งออก CSV", "time_note": "เวลาแท็กต์เลือกได้ 30〜180 วินาที ค่าตั้งกระบวนการเลือกทีละ 30 วินาที", "production_summary": "สรุปการผลิต", "process_time": "เวลากระบวนการ", "production_process_summary": "สรุปการผลิต（เวลากระบวนการ）", "process_4_summary": "หุงข้าว（ในเครื่องหุง）", "process_5_summary": "พักข้าว", "process_6_summary": "คลายข้าว", "process_7_summary": "หุงข้าวเสร็จ／เริ่มกระบวนการถัดไป", "process": "กระบวนการ", "start_time": "เวลาเริ่ม", "end_time": "เวลาสิ้นสุด", "process_duration": "เวลากระบวนการ", "unit": "หน่วย", "total_pots": "จำนวนหม้อทั้งหมด", "line_start": "เวลาเริ่มสายการผลิต", "post_process_start": "เวลาเริ่มกระบวนการถัดไป", "last_start": "เวลาเริ่มหม้อสุดท้าย", "final_finish": "เวลาเสร็จสิ้นสุดท้าย", "total_duration": "เวลารวม", "used_rice_weight": "ปริมาณข้าวที่ใช้(kg)", "estimated_total_cooked_weight": "ปริมาณข้าวสุกโดยประมาณ(kg)", "seasoning_settings": "การตั้งค่าน้ำปรุงรส", "seasoning_name": "ชื่อ", "seasoning_amount_per_pot": "ปริมาณเติม(g/หม้อ)", "seasoning_required_amount": "ปริมาณน้ำปรุงรสที่ต้องใช้(g)", "rule_note": "เวลาเป็นค่าอ้างอิง", "pot_schedule": "ตารางรายหม้อ", "no": "No.", "finish_time": "เริ่มกระบวนการถัดไป", "err": "กรุณาตรวจสอบข้อมูลที่ป้อน", "saved": "บันทึกการตั้งค่าแล้ว", "loaded": "โหลดการตั้งค่าแล้ว", "deleted": "ลบการตั้งค่าแล้ว"});
-D.id=Object.assign({}, D.en, D.id||{}, {"app_name": "Aplikasi Perhitungan Waktu Memasak Nasi", "basic_info": "Informasi dasar", "customer_name": "Nama pelanggan", "customer_list": "Daftar pelanggan", "save_customer": "Simpan", "delete_customer": "Hapus pelanggan saat ini", "load": "Muat", "no_customer": "Belum ada pelanggan tersimpan", "input_settings": "Pengaturan input", "language": "Bahasa tampilan", "method": "Metode perhitungan", "method_start": "Hitung dari waktu mulai", "method_finish": "Hitung mundur dari waktu selesai target", "method_after_process_start": "Hitung dari waktu mulai proses berikutnya", "time_input": "Waktu ditentukan", "pot_count": "Jumlah panci nasi", "tact_time": "Waktu takt", "rice_weight_per_pot": "Beras putih／panci", "expected_yield": "Rasio hasil", "yield_rate": "Rasio hasil", "detail_settings": "Pengaturan detail", "show_detail_settings": "Tampilkan pengaturan detail", "hide_detail_settings": "Sembunyikan pengaturan detail", "setting_values": "Nilai pengaturan proses", "show_setting_values": "Tampilkan nilai pengaturan", "hide_setting_values": "Sembunyikan nilai pengaturan", "minute": "menit", "second": "detik", "process_1": "Persiapan operasi AES", "process_2": "Pencucian・perendaman", "process_3": "Pengisian", "process_4": "Memasak nasi（di dalam mesin）", "process_5": "Pendiaman", "process_6": "Penguraian", "process_7": "Memasak selesai／mulai proses berikutnya", "pot_discharge": "Waktu keluarnya panci nasi", "calc": "Hitung", "company_setting": "Pengaturan pelanggan", "save_company_setting": "Simpan pengaturan pelanggan", "load_company_setting": "Muat pengaturan pelanggan", "delete_company_setting": "Hapus pengaturan pelanggan", "save_standard": "Simpan standar", "load_standard": "Muat standar", "reset": "Nilai awal", "print": "PDF/Cetak", "csv": "Ekspor CSV", "time_note": "Waktu takt dapat dipilih 30〜180 detik. Nilai proses dipilih per 30 detik.", "production_summary": "Ringkasan produksi", "process_time": "Waktu proses", "production_process_summary": "Ringkasan produksi（waktu proses）", "process_4_summary": "Memasak nasi（di dalam mesin）", "process_5_summary": "Pendiaman", "process_6_summary": "Penguraian", "process_7_summary": "Memasak selesai／mulai proses berikutnya", "process": "Proses", "start_time": "Waktu mulai", "end_time": "Waktu selesai", "process_duration": "Waktu proses", "unit": "Unit", "total_pots": "Total panci", "line_start": "Waktu mulai lini produksi", "post_process_start": "Waktu mulai proses berikutnya", "last_start": "Waktu mulai panci terakhir", "final_finish": "Waktu selesai akhir", "total_duration": "Total durasi", "used_rice_weight": "Beras digunakan(kg)", "estimated_total_cooked_weight": "Perkiraan total nasi matang(kg)", "seasoning_settings": "Pengaturan cairan bumbu", "seasoning_name": "Nama", "seasoning_amount_per_pot": "Jumlah tambahan(g/panci)", "seasoning_required_amount": "Cairan bumbu yang diperlukan(g)", "rule_note": "Waktu adalah nilai referensi.", "pot_schedule": "Jadwal per panci", "no": "No.", "finish_time": "Mulai proses berikutnya", "err": "Periksa nilai input.", "saved": "Pengaturan disimpan.", "loaded": "Pengaturan dimuat.", "deleted": "Pengaturan dihapus."});
-D.fil=Object.assign({}, D.en, D.fil||{}, {"app_name": "App ng Pagkalkula ng Oras ng Pagsasaing", "basic_info": "Pangunahing impormasyon", "customer_name": "Pangalan ng customer", "customer_list": "Listahan ng customer", "save_customer": "I-save", "delete_customer": "Tanggalin ang kasalukuyang customer", "load": "I-load", "no_customer": "Walang naka-save na customer", "input_settings": "Mga setting ng input", "language": "Wika ng display", "method": "Paraan ng pagkalkula", "method_start": "Kalkulahin mula sa oras ng simula", "method_finish": "Baliktad na kalkulahin mula sa target na oras ng tapos", "method_after_process_start": "Kalkulahin mula sa oras ng simula ng susunod na proseso", "time_input": "Itinakdang oras", "pot_count": "Bilang ng pots", "tact_time": "Takt time", "rice_weight_per_pot": "Bigas／pot", "expected_yield": "Yield", "yield_rate": "Yield", "detail_settings": "Detalyadong setting", "show_detail_settings": "Ipakita ang detalyadong setting", "hide_detail_settings": "Itago ang detalyadong setting", "setting_values": "Mga halaga ng setting ng proseso", "show_setting_values": "Ipakita ang setting values", "hide_setting_values": "Itago ang setting values", "minute": "min", "second": "sec", "process_1": "Paghahanda ng operasyon ng AES", "process_2": "Paghuhugas・pagbabad", "process_3": "Pagpuno", "process_4": "Pagsasaing（sa loob ng makina）", "process_5": "Pagpapahinga", "process_6": "Pagluluwag", "process_7": "Tapos ang pagsasaing／simula ng susunod na proseso", "pot_discharge": "Oras ng paglabas ng pot", "calc": "Kalkulahin", "company_setting": "Setting ng customer", "save_company_setting": "I-save ang setting ng customer", "load_company_setting": "I-load ang setting ng customer", "delete_company_setting": "Tanggalin ang setting ng customer", "save_standard": "I-save ang standard", "load_standard": "I-load ang standard", "reset": "Default", "print": "PDF/Print", "csv": "CSV export", "time_note": "Ang takt time ay mapipili mula 30〜180 segundo. Ang process setting values ay 30-second steps.", "production_summary": "Buod ng produksyon", "process_time": "Oras ng proseso", "production_process_summary": "Buod ng produksyon（oras ng proseso）", "process_4_summary": "Pagsasaing（sa loob ng makina）", "process_5_summary": "Pagpapahinga", "process_6_summary": "Pagluluwag", "process_7_summary": "Tapos ang pagsasaing／simula ng susunod na proseso", "process": "Proseso", "start_time": "Oras ng simula", "end_time": "Oras ng tapos", "process_duration": "Oras ng proseso", "unit": "Unit", "total_pots": "Kabuuang pots", "line_start": "Simula ng production line", "post_process_start": "Simula ng susunod na proseso", "last_start": "Simula ng huling pot", "final_finish": "Huling tapos", "total_duration": "Kabuuang tagal", "used_rice_weight": "Nagamit na bigas(kg)", "estimated_total_cooked_weight": "Tinatayang kabuuang lutong kanin(kg)", "seasoning_settings": "Setting ng seasoning liquid", "seasoning_name": "Pangalan", "seasoning_amount_per_pot": "Dami(g/pot)", "seasoning_required_amount": "Kailangang seasoning liquid(g)", "rule_note": "Ang oras ay reference value.", "pot_schedule": "Iskedyul bawat pot", "no": "No.", "finish_time": "Simula ng susunod na proseso", "err": "Pakisuri ang input values.", "saved": "Na-save ang setting.", "loaded": "Na-load ang setting.", "deleted": "Na-delete ang setting."});
-D.es=Object.assign({}, D.en, D.es||{}, {"app_name": "Aplicación de cálculo de tiempo de cocción de arroz", "basic_info": "Información básica", "customer_name": "Nombre del cliente", "customer_list": "Lista de clientes", "save_customer": "Guardar", "delete_customer": "Eliminar cliente actual", "load": "Cargar", "no_customer": "No hay clientes guardados", "input_settings": "Configuración de entrada", "language": "Idioma de visualización", "method": "Método de cálculo", "method_start": "Calcular desde hora de inicio", "method_finish": "Calcular hacia atrás desde hora objetivo de finalización", "method_after_process_start": "Calcular desde inicio del proceso posterior", "time_input": "Hora especificada", "pot_count": "Número de ollas", "tact_time": "Tiempo takt", "rice_weight_per_pot": "Arroz pulido／olla", "expected_yield": "Rendimiento", "yield_rate": "Rendimiento", "detail_settings": "Configuración detallada", "show_detail_settings": "Mostrar configuración detallada", "hide_detail_settings": "Ocultar configuración detallada", "setting_values": "Valores de ajuste del proceso", "show_setting_values": "Mostrar valores de ajuste", "hide_setting_values": "Ocultar valores de ajuste", "minute": "min", "second": "seg", "process_1": "Preparación de operación AES", "process_2": "Lavado・remojo", "process_3": "Llenado", "process_4": "Cocción de arroz（en la máquina）", "process_5": "Reposo", "process_6": "Aflojado", "process_7": "Cocción terminada／inicio del proceso posterior", "pot_discharge": "Hora de salida de la olla", "calc": "Calcular", "company_setting": "Configuración del cliente", "save_company_setting": "Guardar configuración del cliente", "load_company_setting": "Cargar configuración del cliente", "delete_company_setting": "Eliminar configuración del cliente", "save_standard": "Guardar estándar", "load_standard": "Cargar estándar", "reset": "Predeterminado", "print": "PDF/Imprimir", "csv": "Exportar CSV", "time_note": "El tiempo takt se puede seleccionar de 30〜180 segundos. Los valores de proceso se seleccionan en pasos de 30 segundos.", "production_summary": "Resumen de producción", "process_time": "Tiempo de proceso", "production_process_summary": "Resumen de producción（tiempo de proceso）", "process_4_summary": "Cocción de arroz（en la máquina）", "process_5_summary": "Reposo", "process_6_summary": "Aflojado", "process_7_summary": "Cocción terminada／inicio del proceso posterior", "process": "Proceso", "start_time": "Hora de inicio", "end_time": "Hora de fin", "process_duration": "Tiempo de proceso", "unit": "Unidad", "total_pots": "Total de ollas", "line_start": "Inicio de línea de producción", "post_process_start": "Inicio del proceso posterior", "last_start": "Inicio de la última olla", "final_finish": "Finalización final", "total_duration": "Duración total", "used_rice_weight": "Arroz usado(kg)", "estimated_total_cooked_weight": "Total estimado de arroz cocido(kg)", "seasoning_settings": "Configuración de líquido sazonador", "seasoning_name": "Nombre", "seasoning_amount_per_pot": "Cantidad(g/olla)", "seasoning_required_amount": "Líquido sazonador requerido(g)", "rule_note": "Los tiempos son valores de referencia.", "pot_schedule": "Programa por olla", "no": "No.", "finish_time": "Inicio del siguiente proceso", "err": "Verifique los valores ingresados.", "saved": "Configuración guardada.", "loaded": "Configuración cargada.", "deleted": "Configuración eliminada."});
+D.ko=Object.assign({}, D.en, D.ko||{}, {"app_name": "취반 시간 계산 앱", "basic_info": "기본 정보", "title_field": "제목", "customer_name": "고객명", "customer_list": "고객 목록", "save_customer": "저장", "delete_customer": "현재 고객 삭제", "load": "불러오기", "no_customer": "저장된 고객이 없습니다", "input_settings": "입력 설정", "language": "표시 언어", "method": "계산 방식", "method_start": "시작 시간 기준 계산", "method_finish": "희망 완료 시간 기준 역산", "method_after_process_start": "후공정 시작 시간 기준 계산", "time_input": "지정 시간", "pot_count": "취반 솥 수", "tact_time": "택트 시간", "rice_weight_per_pot": "정미 중량／솥", "expected_yield": "수율", "yield_rate": "수율", "detail_settings": "상세 설정", "show_detail_settings": "상세 설정 표시", "hide_detail_settings": "상세 설정 숨기기", "setting_values": "공정 설정값", "show_setting_values": "공정 설정값 표시", "hide_setting_values": "공정 설정값 숨기기", "minute": "분", "second": "초", "process_1": "AES 운전 준비", "process_2": "세미・침지", "process_3": "충전", "process_4": "취반（취반기 내）", "process_5": "뜸들이기", "process_6": "풀기", "process_7": "취반 완료／후공정 시작", "pot_discharge": "취반 솥 배출 시간", "calc": "계산", "company_setting": "고객 설정", "save_company_setting": "고객 설정 저장", "load_company_setting": "고객 설정 불러오기", "delete_company_setting": "고객 설정 삭제", "save_standard": "표준 설정 저장", "load_standard": "표준 설정 불러오기", "reset": "초기값", "print": "PDF/인쇄", "csv": "CSV 출력", "time_note": "택트 시간은 30〜180초 선택식입니다. 공정 설정값은 1초 단위로 조정할 수 있습니다.", "production_summary": "생산 개요", "process_time": "공정 시간", "production_process_summary": "생산 개요（공정 시간）", "process_4_summary": "취반（취반기 내）", "process_5_summary": "뜸들이기", "process_6_summary": "풀기", "process_7_summary": "취반 완료／후공정 시작", "process": "공정", "start_time": "시작 시각", "end_time": "종료 시각", "process_duration": "공정 시간", "unit": "단위", "total_pots": "총 솥 수", "line_start": "생산 라인 시작 시간", "post_process_start": "후공정 시작 시간", "last_start": "마지막 솥 시작 시간", "final_finish": "최종 완료 시간", "total_duration": "총 소요 시간", "used_rice_weight": "사용 정미량(kg)", "estimated_total_cooked_weight": "예상 취반 총량(kg)", "seasoning_settings": "조미액 설정", "seasoning_name": "명칭", "seasoning_amount_per_pot": "첨가량(g/솥)", "seasoning_required_amount": "조미액 필요량(g)", "rule_note": "시간은 참고값입니다.", "pot_schedule": "솥별 스케줄", "no": "No.", "finish_time": "다음 공정 시작", "err": "입력 내용을 확인해 주세요.", "saved": "설정을 저장했습니다.", "loaded": "설정을 불러왔습니다.", "deleted": "설정을 삭제했습니다."});
+D.vi=Object.assign({}, D.en, D.vi||{}, {"app_name": "Ứng dụng tính thời gian nấu cơm", "basic_info": "Thông tin cơ bản", "customer_name": "Tên khách hàng", "customer_list": "Danh sách khách hàng", "save_customer": "Lưu", "delete_customer": "Xóa khách hàng hiện tại", "load": "Tải", "no_customer": "Chưa có khách hàng đã lưu", "input_settings": "Cài đặt nhập liệu", "language": "Ngôn ngữ hiển thị", "method": "Phương pháp tính", "method_start": "Tính từ thời gian bắt đầu", "method_finish": "Tính ngược từ thời gian hoàn thành mong muốn", "method_after_process_start": "Tính từ thời gian bắt đầu công đoạn sau", "time_input": "Thời gian chỉ định", "pot_count": "Số nồi nấu cơm", "tact_time": "Thời gian takt", "rice_weight_per_pot": "Gạo trắng／nồi", "expected_yield": "Tỷ lệ thành phẩm", "yield_rate": "Tỷ lệ thành phẩm", "detail_settings": "Cài đặt chi tiết", "show_detail_settings": "Hiển thị cài đặt chi tiết", "hide_detail_settings": "Ẩn cài đặt chi tiết", "setting_values": "Giá trị cài đặt công đoạn", "show_setting_values": "Hiển thị giá trị cài đặt", "hide_setting_values": "Ẩn giá trị cài đặt", "minute": "phút", "second": "giây", "process_1": "Chuẩn bị vận hành AES", "process_2": "Rửa gạo・ngâm", "process_3": "Nạp liệu", "process_4": "Nấu cơm（trong máy nấu）", "process_5": "Ủ cơm", "process_6": "Đánh tơi", "process_7": "Hoàn tất nấu cơm／bắt đầu công đoạn sau", "pot_discharge": "Thời gian xả nồi cơm", "calc": "Tính", "company_setting": "Cài đặt khách hàng", "save_company_setting": "Lưu cài đặt khách hàng", "load_company_setting": "Tải cài đặt khách hàng", "delete_company_setting": "Xóa cài đặt khách hàng", "save_standard": "Lưu cài đặt chuẩn", "load_standard": "Tải cài đặt chuẩn", "reset": "Giá trị ban đầu", "print": "PDF/In", "csv": "Xuất CSV", "time_note": "Thời gian takt chọn từ 30〜180 giây. Giá trị công đoạn có thể chỉnh từng 1 giây.", "production_summary": "Tổng quan sản xuất", "process_time": "Thời gian công đoạn", "production_process_summary": "Tổng quan sản xuất（thời gian công đoạn）", "process_4_summary": "Nấu cơm（trong máy nấu）", "process_5_summary": "Ủ cơm", "process_6_summary": "Đánh tơi", "process_7_summary": "Hoàn tất nấu cơm／bắt đầu công đoạn sau", "process": "Công đoạn", "start_time": "Thời gian bắt đầu", "end_time": "Thời gian kết thúc", "process_duration": "Thời gian công đoạn", "unit": "Đơn vị", "total_pots": "Tổng số nồi", "line_start": "Thời gian bắt đầu dây chuyền", "post_process_start": "Thời gian bắt đầu công đoạn sau", "last_start": "Thời gian bắt đầu nồi cuối", "final_finish": "Thời gian hoàn thành cuối", "total_duration": "Tổng thời gian", "used_rice_weight": "Lượng gạo sử dụng(kg)", "estimated_total_cooked_weight": "Tổng lượng cơm dự kiến(kg)", "seasoning_settings": "Cài đặt dung dịch gia vị", "seasoning_name": "Tên", "seasoning_amount_per_pot": "Lượng thêm(g/nồi)", "seasoning_required_amount": "Lượng dung dịch gia vị cần thiết(g)", "rule_note": "Thời gian là giá trị tham khảo.", "pot_schedule": "Lịch từng nồi", "no": "No.", "finish_time": "Bắt đầu công đoạn sau", "err": "Vui lòng kiểm tra nội dung nhập.", "saved": "Đã lưu cài đặt.", "loaded": "Đã tải cài đặt.", "deleted": "Đã xóa cài đặt."});
+D.th=Object.assign({}, D.en, D.th||{}, {"app_name": "แอปคำนวณเวลาหุงข้าว", "basic_info": "ข้อมูลพื้นฐาน", "customer_name": "ชื่อลูกค้า", "customer_list": "รายชื่อลูกค้า", "save_customer": "บันทึก", "delete_customer": "ลบลูกค้าปัจจุบัน", "load": "โหลด", "no_customer": "ยังไม่มีลูกค้าที่บันทึกไว้", "input_settings": "การตั้งค่าข้อมูลเข้า", "language": "ภาษาที่แสดง", "method": "วิธีคำนวณ", "method_start": "คำนวณจากเวลาเริ่ม", "method_finish": "คำนวณย้อนจากเวลาที่ต้องการให้เสร็จ", "method_after_process_start": "คำนวณจากเวลาเริ่มกระบวนการถัดไป", "time_input": "เวลาที่กำหนด", "pot_count": "จำนวนหม้อหุง", "tact_time": "เวลาแท็กต์", "rice_weight_per_pot": "ข้าวสาร／หม้อ", "expected_yield": "อัตราผลผลิต", "yield_rate": "อัตราผลผลิต", "detail_settings": "การตั้งค่ารายละเอียด", "show_detail_settings": "แสดงการตั้งค่ารายละเอียด", "hide_detail_settings": "ซ่อนการตั้งค่ารายละเอียด", "setting_values": "ค่าตั้งกระบวนการ", "show_setting_values": "แสดงค่าตั้งกระบวนการ", "hide_setting_values": "ซ่อนค่าตั้งกระบวนการ", "minute": "นาที", "second": "วินาที", "process_1": "เตรียมการเดินเครื่อง AES", "process_2": "ล้างข้าว・แช่ข้าว", "process_3": "เติมข้าว", "process_4": "หุงข้าว（ในเครื่องหุง）", "process_5": "พักข้าว", "process_6": "คลายข้าว", "process_7": "หุงข้าวเสร็จ／เริ่มกระบวนการถัดไป", "pot_discharge": "เวลาปล่อยหม้อหุง", "calc": "คำนวณ", "company_setting": "การตั้งค่าลูกค้า", "save_company_setting": "บันทึกการตั้งค่าลูกค้า", "load_company_setting": "โหลดการตั้งค่าลูกค้า", "delete_company_setting": "ลบการตั้งค่าลูกค้า", "save_standard": "บันทึกค่ามาตรฐาน", "load_standard": "โหลดค่ามาตรฐาน", "reset": "ค่าเริ่มต้น", "print": "PDF/พิมพ์", "csv": "ส่งออก CSV", "time_note": "เวลาแท็กต์เลือกได้ 30〜180 วินาที ค่าตั้งกระบวนการปรับได้ทีละ 1 วินาที", "production_summary": "สรุปการผลิต", "process_time": "เวลากระบวนการ", "production_process_summary": "สรุปการผลิต（เวลากระบวนการ）", "process_4_summary": "หุงข้าว（ในเครื่องหุง）", "process_5_summary": "พักข้าว", "process_6_summary": "คลายข้าว", "process_7_summary": "หุงข้าวเสร็จ／เริ่มกระบวนการถัดไป", "process": "กระบวนการ", "start_time": "เวลาเริ่ม", "end_time": "เวลาสิ้นสุด", "process_duration": "เวลากระบวนการ", "unit": "หน่วย", "total_pots": "จำนวนหม้อทั้งหมด", "line_start": "เวลาเริ่มสายการผลิต", "post_process_start": "เวลาเริ่มกระบวนการถัดไป", "last_start": "เวลาเริ่มหม้อสุดท้าย", "final_finish": "เวลาเสร็จสิ้นสุดท้าย", "total_duration": "เวลารวม", "used_rice_weight": "ปริมาณข้าวที่ใช้(kg)", "estimated_total_cooked_weight": "ปริมาณข้าวสุกโดยประมาณ(kg)", "seasoning_settings": "การตั้งค่าน้ำปรุงรส", "seasoning_name": "ชื่อ", "seasoning_amount_per_pot": "ปริมาณเติม(g/หม้อ)", "seasoning_required_amount": "ปริมาณน้ำปรุงรสที่ต้องใช้(g)", "rule_note": "เวลาเป็นค่าอ้างอิง", "pot_schedule": "ตารางรายหม้อ", "no": "No.", "finish_time": "เริ่มกระบวนการถัดไป", "err": "กรุณาตรวจสอบข้อมูลที่ป้อน", "saved": "บันทึกการตั้งค่าแล้ว", "loaded": "โหลดการตั้งค่าแล้ว", "deleted": "ลบการตั้งค่าแล้ว"});
+D.id=Object.assign({}, D.en, D.id||{}, {"app_name": "Aplikasi Perhitungan Waktu Memasak Nasi", "basic_info": "Informasi dasar", "customer_name": "Nama pelanggan", "customer_list": "Daftar pelanggan", "save_customer": "Simpan", "delete_customer": "Hapus pelanggan saat ini", "load": "Muat", "no_customer": "Belum ada pelanggan tersimpan", "input_settings": "Pengaturan input", "language": "Bahasa tampilan", "method": "Metode perhitungan", "method_start": "Hitung dari waktu mulai", "method_finish": "Hitung mundur dari waktu selesai target", "method_after_process_start": "Hitung dari waktu mulai proses berikutnya", "time_input": "Waktu ditentukan", "pot_count": "Jumlah panci nasi", "tact_time": "Waktu takt", "rice_weight_per_pot": "Beras putih／panci", "expected_yield": "Rasio hasil", "yield_rate": "Rasio hasil", "detail_settings": "Pengaturan detail", "show_detail_settings": "Tampilkan pengaturan detail", "hide_detail_settings": "Sembunyikan pengaturan detail", "setting_values": "Nilai pengaturan proses", "show_setting_values": "Tampilkan nilai pengaturan", "hide_setting_values": "Sembunyikan nilai pengaturan", "minute": "menit", "second": "detik", "process_1": "Persiapan operasi AES", "process_2": "Pencucian・perendaman", "process_3": "Pengisian", "process_4": "Memasak nasi（di dalam mesin）", "process_5": "Pendiaman", "process_6": "Penguraian", "process_7": "Memasak selesai／mulai proses berikutnya", "pot_discharge": "Waktu keluarnya panci nasi", "calc": "Hitung", "company_setting": "Pengaturan pelanggan", "save_company_setting": "Simpan pengaturan pelanggan", "load_company_setting": "Muat pengaturan pelanggan", "delete_company_setting": "Hapus pengaturan pelanggan", "save_standard": "Simpan standar", "load_standard": "Muat standar", "reset": "Nilai awal", "print": "PDF/Cetak", "csv": "Ekspor CSV", "time_note": "Waktu takt dapat dipilih 30〜180 detik. Nilai proses dapat diatur per 1 detik.", "production_summary": "Ringkasan produksi", "process_time": "Waktu proses", "production_process_summary": "Ringkasan produksi（waktu proses）", "process_4_summary": "Memasak nasi（di dalam mesin）", "process_5_summary": "Pendiaman", "process_6_summary": "Penguraian", "process_7_summary": "Memasak selesai／mulai proses berikutnya", "process": "Proses", "start_time": "Waktu mulai", "end_time": "Waktu selesai", "process_duration": "Waktu proses", "unit": "Unit", "total_pots": "Total panci", "line_start": "Waktu mulai lini produksi", "post_process_start": "Waktu mulai proses berikutnya", "last_start": "Waktu mulai panci terakhir", "final_finish": "Waktu selesai akhir", "total_duration": "Total durasi", "used_rice_weight": "Beras digunakan(kg)", "estimated_total_cooked_weight": "Perkiraan total nasi matang(kg)", "seasoning_settings": "Pengaturan cairan bumbu", "seasoning_name": "Nama", "seasoning_amount_per_pot": "Jumlah tambahan(g/panci)", "seasoning_required_amount": "Cairan bumbu yang diperlukan(g)", "rule_note": "Waktu adalah nilai referensi.", "pot_schedule": "Jadwal per panci", "no": "No.", "finish_time": "Mulai proses berikutnya", "err": "Periksa nilai input.", "saved": "Pengaturan disimpan.", "loaded": "Pengaturan dimuat.", "deleted": "Pengaturan dihapus."});
+D.fil=Object.assign({}, D.en, D.fil||{}, {"app_name": "App ng Pagkalkula ng Oras ng Pagsasaing", "basic_info": "Pangunahing impormasyon", "customer_name": "Pangalan ng customer", "customer_list": "Listahan ng customer", "save_customer": "I-save", "delete_customer": "Tanggalin ang kasalukuyang customer", "load": "I-load", "no_customer": "Walang naka-save na customer", "input_settings": "Mga setting ng input", "language": "Wika ng display", "method": "Paraan ng pagkalkula", "method_start": "Kalkulahin mula sa oras ng simula", "method_finish": "Baliktad na kalkulahin mula sa target na oras ng tapos", "method_after_process_start": "Kalkulahin mula sa oras ng simula ng susunod na proseso", "time_input": "Itinakdang oras", "pot_count": "Bilang ng pots", "tact_time": "Takt time", "rice_weight_per_pot": "Bigas／pot", "expected_yield": "Yield", "yield_rate": "Yield", "detail_settings": "Detalyadong setting", "show_detail_settings": "Ipakita ang detalyadong setting", "hide_detail_settings": "Itago ang detalyadong setting", "setting_values": "Mga halaga ng setting ng proseso", "show_setting_values": "Ipakita ang setting values", "hide_setting_values": "Itago ang setting values", "minute": "min", "second": "sec", "process_1": "Paghahanda ng operasyon ng AES", "process_2": "Paghuhugas・pagbabad", "process_3": "Pagpuno", "process_4": "Pagsasaing（sa loob ng makina）", "process_5": "Pagpapahinga", "process_6": "Pagluluwag", "process_7": "Tapos ang pagsasaing／simula ng susunod na proseso", "pot_discharge": "Oras ng paglabas ng pot", "calc": "Kalkulahin", "company_setting": "Setting ng customer", "save_company_setting": "I-save ang setting ng customer", "load_company_setting": "I-load ang setting ng customer", "delete_company_setting": "Tanggalin ang setting ng customer", "save_standard": "I-save ang standard", "load_standard": "I-load ang standard", "reset": "Default", "print": "PDF/Print", "csv": "CSV export", "time_note": "Ang takt time ay mapipili mula 30〜180 segundo. Ang process setting values ay puwedeng 1-second steps.", "production_summary": "Buod ng produksyon", "process_time": "Oras ng proseso", "production_process_summary": "Buod ng produksyon（oras ng proseso）", "process_4_summary": "Pagsasaing（sa loob ng makina）", "process_5_summary": "Pagpapahinga", "process_6_summary": "Pagluluwag", "process_7_summary": "Tapos ang pagsasaing／simula ng susunod na proseso", "process": "Proseso", "start_time": "Oras ng simula", "end_time": "Oras ng tapos", "process_duration": "Oras ng proseso", "unit": "Unit", "total_pots": "Kabuuang pots", "line_start": "Simula ng production line", "post_process_start": "Simula ng susunod na proseso", "last_start": "Simula ng huling pot", "final_finish": "Huling tapos", "total_duration": "Kabuuang tagal", "used_rice_weight": "Nagamit na bigas(kg)", "estimated_total_cooked_weight": "Tinatayang kabuuang lutong kanin(kg)", "seasoning_settings": "Setting ng seasoning liquid", "seasoning_name": "Pangalan", "seasoning_amount_per_pot": "Dami(g/pot)", "seasoning_required_amount": "Kailangang seasoning liquid(g)", "rule_note": "Ang oras ay reference value.", "pot_schedule": "Iskedyul bawat pot", "no": "No.", "finish_time": "Simula ng susunod na proseso", "err": "Pakisuri ang input values.", "saved": "Na-save ang setting.", "loaded": "Na-load ang setting.", "deleted": "Na-delete ang setting."});
+D.es=Object.assign({}, D.en, D.es||{}, {"app_name": "Aplicación de cálculo de tiempo de cocción de arroz", "basic_info": "Información básica", "customer_name": "Nombre del cliente", "customer_list": "Lista de clientes", "save_customer": "Guardar", "delete_customer": "Eliminar cliente actual", "load": "Cargar", "no_customer": "No hay clientes guardados", "input_settings": "Configuración de entrada", "language": "Idioma de visualización", "method": "Método de cálculo", "method_start": "Calcular desde hora de inicio", "method_finish": "Calcular hacia atrás desde hora objetivo de finalización", "method_after_process_start": "Calcular desde inicio del proceso posterior", "time_input": "Hora especificada", "pot_count": "Número de ollas", "tact_time": "Tiempo takt", "rice_weight_per_pot": "Arroz pulido／olla", "expected_yield": "Rendimiento", "yield_rate": "Rendimiento", "detail_settings": "Configuración detallada", "show_detail_settings": "Mostrar configuración detallada", "hide_detail_settings": "Ocultar configuración detallada", "setting_values": "Valores de ajuste del proceso", "show_setting_values": "Mostrar valores de ajuste", "hide_setting_values": "Ocultar valores de ajuste", "minute": "min", "second": "seg", "process_1": "Preparación de operación AES", "process_2": "Lavado・remojo", "process_3": "Llenado", "process_4": "Cocción de arroz（en la máquina）", "process_5": "Reposo", "process_6": "Aflojado", "process_7": "Cocción terminada／inicio del proceso posterior", "pot_discharge": "Hora de salida de la olla", "calc": "Calcular", "company_setting": "Configuración del cliente", "save_company_setting": "Guardar configuración del cliente", "load_company_setting": "Cargar configuración del cliente", "delete_company_setting": "Eliminar configuración del cliente", "save_standard": "Guardar estándar", "load_standard": "Cargar estándar", "reset": "Predeterminado", "print": "PDF/Imprimir", "csv": "Exportar CSV", "time_note": "El tiempo takt se puede seleccionar de 30〜180 segundos. Los valores de proceso se ajustan en pasos de 1 segundo.", "production_summary": "Resumen de producción", "process_time": "Tiempo de proceso", "production_process_summary": "Resumen de producción（tiempo de proceso）", "process_4_summary": "Cocción de arroz（en la máquina）", "process_5_summary": "Reposo", "process_6_summary": "Aflojado", "process_7_summary": "Cocción terminada／inicio del proceso posterior", "process": "Proceso", "start_time": "Hora de inicio", "end_time": "Hora de fin", "process_duration": "Tiempo de proceso", "unit": "Unidad", "total_pots": "Total de ollas", "line_start": "Inicio de línea de producción", "post_process_start": "Inicio del proceso posterior", "last_start": "Inicio de la última olla", "final_finish": "Finalización final", "total_duration": "Duración total", "used_rice_weight": "Arroz usado(kg)", "estimated_total_cooked_weight": "Total estimado de arroz cocido(kg)", "seasoning_settings": "Configuración de líquido sazonador", "seasoning_name": "Nombre", "seasoning_amount_per_pot": "Cantidad(g/olla)", "seasoning_required_amount": "Líquido sazonador requerido(g)", "rule_note": "Los tiempos son valores de referencia.", "pot_schedule": "Programa por olla", "no": "No.", "finish_time": "Inicio del siguiente proceso", "err": "Verifique los valores ingresados.", "saved": "Configuración guardada.", "loaded": "Configuración cargada.", "deleted": "Configuración eliminada."});
 
 
 
@@ -347,13 +406,49 @@ D.fil=Object.assign({}, D.fil||D.en, {"schedule_wash": "Simula ng hugas・pagbab
 D.es=Object.assign({}, D.es||D.en, {"schedule_wash": "Inicio de lavado・remojo", "schedule_fill": "Inicio de llenado", "schedule_cook": "Inicio de cocción", "schedule_steam": "Inicio de reposo", "schedule_loosen": "Inicio de aflojado", "schedule_next": "Inicio del siguiente proceso"});
 const processKeys=["process_1","process_2","process_3","process_4","process_5","process_6","process_7"];
 let rows=[];
+let schedulePlan={startSec:0, finalFinishSec:0, targetEpoch:null};
 function E(id){return document.getElementById(id)}
 function L(){return E("lang").value}
 function t(k){return (D[L()]&&D[L()][k])||D.en[k]||k}
 function mod(s){return ((s%86400)+86400)%86400}
 function fmt(s){s=mod(Math.round(s));let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return sec?`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`:`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`}
 function fmtDur(s){s=Math.round(s);let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return `${h}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`}
+function fmtDurHM(seconds){
+  const totalMin=Math.max(0,Math.ceil(Number(seconds||0)/60));
+  const h=Math.floor(totalMin/60), m=totalMin%60;
+  if(totalMin<=0) return "完了済み";
+  if(h>0) return `${h}時間${m}分`;
+  return `${m}分`;
+}
 function parseClock(v){const [h,m]=v.split(":").map(Number);return h*3600+m*60}
+function pad2(n){return String(n).padStart(2,"0")}
+function fmtDateTimeForRecord(d){return `${d.getFullYear()}/${pad2(d.getMonth()+1)}/${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`}
+function buildTargetEpoch(startSec, finishSec){
+  const now=new Date();
+  const base=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+  let target=base+finishSec*1000;
+  if(finishSec<startSec) target+=86400000; // 日跨ぎ工程
+  return target;
+}
+function updateClockAndCountdown(){
+  const now=new Date();
+  const clock=E("currentClock");
+  if(clock) clock.textContent=`${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+  const cd=E("completionCountdown"), tg=E("completionTarget");
+  if(cd){
+    const target=schedulePlan&&schedulePlan.targetEpoch;
+    if(!target){cd.textContent="--分";}
+    else{
+      const remain=Math.max(0,Math.ceil((target-now.getTime())/1000));
+      cd.textContent=fmtDurHM(remain);
+      if(remain<=0) cd.style.color="var(--green)"; else cd.style.color="var(--blue)";
+    }
+  }
+  if(tg){
+    const ff=schedulePlan&&Number.isFinite(schedulePlan.finalFinishSec)?fmt(schedulePlan.finalFinishSec):"--:--";
+    tg.textContent=`終了予定 ${ff}`;
+  }
+}
 function parseDur(v){
   v=String(v).trim();
   if(/^\d+:\d{1,2}:\d{1,2}$/.test(v)){let [h,m,s]=v.split(":").map(Number);return h*3600+m*60+s}
@@ -376,34 +471,45 @@ function renderSeasonings(pots){
   });
   E("outSeasonings").innerHTML=lines.length?lines.join("<br>"):"--";
 }
-function nearest30(sec){return Math.round(sec/30)*30}
 function getTaktSec(){
   return Number(E("taktValue").value);
 }
 function setTaktSec(sec){
-  sec=Math.round(sec);
+  sec=Math.round(Number(sec)||0);
   if(sec<30) sec=30;
   if(sec>180) sec=180;
   E("taktValue").value=sec;
 }
+function clampInt(v,min,max){
+  v=Math.round(Number(v)||0);
+  if(v<min) v=min;
+  if(v>max) v=max;
+  return v;
+}
 function getProcSec(i){
-  return Number(E(`pval${i}`).value);
+  const h=Number(E(`ph${i}`)?.value||0);
+  const m=Number(E(`pm${i}`)?.value||0);
+  const s=Number(E(`ps${i}`)?.value||0);
+  return Math.max(0, Math.round(h*3600+m*60+s));
 }
 function setProcSec(i,sec){
-  E(`pval${i}`).value=nearest30(sec);
+  sec=Math.max(0,Math.round(Number(sec)||0));
+  const h=Math.floor(sec/3600);
+  const m=Math.floor((sec%3600)/60);
+  const ss=sec%60;
+  if(E(`ph${i}`)) E(`ph${i}`).value=h;
+  if(E(`pm${i}`)) E(`pm${i}`).value=m;
+  if(E(`ps${i}`)) E(`ps${i}`).value=ss;
+}
+function normalizeProcInput(i){
+  if(E(`ph${i}`)) E(`ph${i}`).value=clampInt(E(`ph${i}`).value,0,99);
+  if(E(`pm${i}`)) E(`pm${i}`).value=clampInt(E(`pm${i}`).value,0,59);
+  if(E(`ps${i}`)) E(`ps${i}`).value=clampInt(E(`ps${i}`).value,0,59);
 }
 function formatChoice(sec){
-  const m=Math.floor(sec/60), s=sec%60;
-  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-}
-function fillDurationSelect(sel, maxMin=180){
-  sel.innerHTML="";
-  for(let sec=0; sec<=maxMin*60; sec+=30){
-    const o=document.createElement("option");
-    o.value=sec;
-    o.textContent=formatChoice(sec);
-    sel.appendChild(o);
-  }
+  sec=Math.max(0,Math.round(Number(sec)||0));
+  const h=Math.floor(sec/3600), m=Math.floor((sec%3600)/60), s=sec%60;
+  return h>0?`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
 }
 function fillTaktSelect(sel){
   sel.innerHTML="";
@@ -422,11 +528,17 @@ function buildSelectors(){
     const row=document.createElement("div");
     row.className="setting-row";
     row.innerHTML=`<div class="label" data-pkey="${key}">${t(key)}</div>
-      <select id="pval${i}"></select>`;
+      <div class="duration-inputs">
+        <label><input id="ph${i}" type="number" min="0" max="99" step="1" value="0"><span>時</span></label>
+        <label><input id="pm${i}" type="number" min="0" max="59" step="1" value="0"><span>分</span></label>
+        <label><input id="ps${i}" type="number" min="0" max="59" step="1" value="0"><span>秒</span></label>
+      </div>`;
     box.appendChild(row);
-    const sel=row.querySelector(`#pval${i}`);
-    fillDurationSelect(sel, 180);
-    sel.addEventListener("change",calc);
+    ["h","m","s"].forEach(k=>{
+      const inp=E(`p${k}${i}`);
+      inp.addEventListener("input",()=>{normalizeProcInput(i); calc();});
+      inp.addEventListener("change",()=>{normalizeProcInput(i); calc();});
+    });
   });
 }
 function refreshSelectorLabels(){
@@ -461,18 +573,33 @@ function calc(){
   }
   const specified=parseClock(E("timeInput").value);
   const totalProc=p.reduce((a,b)=>a+b,0);
+  // カウントダウンは「最後の1釜の工程終了」まで。
+  // 後工程へ移るための追加予備時間（process_7）は含めない。
+  const cookingProc=p.slice(0,6).reduce((a,b)=>a+b,0);
   const method=E("method").value;
-  let start;
-  if(method==="method_start") start=specified;
-  else if(method==="method_after_process_start") start=specified-totalProc;
-  else start=specified-((pots-1)*takt+totalProc);
-  start=mod(start);
+  let startRaw, finalFinishRaw;
+  const totalLine=(pots-1)*takt+totalProc;
+  const cookingLine=(pots-1)*takt+cookingProc;
+  if(method==="method_start"){
+    startRaw=specified;
+    finalFinishRaw=startRaw+totalLine;
+  }else if(method==="method_after_process_start"){
+    startRaw=specified-totalProc;
+    finalFinishRaw=startRaw+totalLine;
+  }else{
+    finalFinishRaw=specified;
+    startRaw=finalFinishRaw-totalLine;
+  }
+  const start=mod(startRaw);
 
-  const firstFinish=mod(start+totalProc);
-  const lastLineStart=mod(start+(pots-1)*takt);
+  const firstFinish=mod(startRaw+totalProc);
+  const lastLineStart=mod(startRaw+(pots-1)*takt);
   const lastStart=mod(lastLineStart+p[0]); // 最終鍋開始時間＝最後の釜の洗米開始／浸漬開始
-  const finalFinish=mod(lastLineStart+totalProc);
-  const duration=(finalFinish-start)+(finalFinish<start?86400:0);
+  const finalFinish=mod(finalFinishRaw);
+  const countdownFinish=mod(startRaw+cookingLine);
+  const duration=totalLine;
+  schedulePlan={startSec:start, finalFinishSec:countdownFinish, targetEpoch:buildTargetEpoch(start, countdownFinish)};
+  updateClockAndCountdown();
   const title=E("docTitle").value||"--";
   E("outTitle").textContent=title;
   E("printTitle").textContent=title;
@@ -501,9 +628,9 @@ function calc(){
     p.forEach((sec,i)=>{
       const st=mod(start+elapsed);
       const en=mod(start+elapsed+sec);
-      const dur=(Math.round((sec/60)*10)/10).toFixed(1);
+      const dur=formatChoice(sec);
       const tr=document.createElement("tr");
-      tr.innerHTML=`<td>${i+1}</td><td>${summaryNames[i]}</td><td class="time-cell">${fmt(st)}</td><td class="time-cell">${fmt(en)}</td><td class="time-cell">${dur}</td><td>${t("minute")}</td>`;
+      tr.innerHTML=`<td>${i+1}</td><td>${summaryNames[i]}</td><td class="time-cell">${fmt(st)}</td><td class="time-cell">${fmt(en)}</td><td class="time-cell">${dur}</td><td>${t("process_duration")}</td>`;
       psBody.appendChild(tr);
       elapsed+=sec;
     });
@@ -556,10 +683,15 @@ function renderCustomerList(){
     const btn=document.createElement("button");
     btn.type="button";
     btn.textContent=t("load");
+    const del=document.createElement("button");
+    del.type="button";
+    del.textContent="削除";
     span.addEventListener("click",()=>loadCustomerByName(name));
     btn.addEventListener("click",()=>loadCustomerByName(name));
+    del.addEventListener("click",()=>deleteSavedSettingByName(name));
     item.appendChild(span);
     item.appendChild(btn);
+    item.appendChild(del);
     box.appendChild(item);
   });
 }
@@ -591,15 +723,21 @@ function loadCompanySetting(){
   const name=(E("docTitle").value||"").trim();
   loadCustomerByName(name);
 }
-function deleteCurrentCustomerSetting(){
-  const name=(E("docTitle").value||"").trim();
+function deleteSavedSettingByName(name){
+  name=String(name||"").trim();
   if(!name) return;
   const settings=getCompanySettings();
+  if(!settings[name]) return;
+  if(!confirm(`この設定を削除しますか？\n\n${name}`)) return;
   delete settings[name];
   setCompanySettings(settings);
   updateCompanySelect();
   E("err").textContent=t("deleted");
   calc();
+}
+function deleteCurrentCustomerSetting(){
+  const name=(E("docTitle").value||"").trim();
+  deleteSavedSettingByName(name);
 }
 function deleteCompanySetting(){
   deleteCurrentCustomerSetting();
@@ -630,11 +768,7 @@ function resetDefaults(){
   applyState({docTitle:"〇〇食品",lang:"ja",method:"method_after_process_start",timeInput:"08:00",pots:"125",taktValue:90,ricePerPot:"7",yieldRate:"2.1",p0:600,p1:2400,p2:90,p3:1680,p4:1200,p5:90,p6:90,seasoningName0:"調味液A",seasoningAmount0:0,seasoningName1:"調味液B",seasoningAmount1:0,seasoningName2:"調味液C",seasoningAmount2:0});
   setLang(); calc();
 }
-function secondsToChoice(sec){
-  sec=Number(sec)||0;
-  const m=Math.floor(sec/60), s=sec%60;
-  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-}
+function secondsToChoice(sec){return formatChoice(sec);}
 function settingToRow(name,s){
   const oldState=state();
   applyState(s);
@@ -663,11 +797,107 @@ function settingToRow(name,s){
     E("outDuration").textContent,
     E("outRice").textContent,
     E("outCooked").textContent,
-    ...getSeasonings().flatMap(x=>[x.name, x.amount, Math.round((Number(x.amount)||0)*(Number(E("pots").value)||0))])
+    ...getSeasonings().flatMap(x=>[x.name, x.amount, Math.round((Number(x.amount)||0)*(Number(E("pots").value)||0))]),
+    exportStopwatchJSON()
   ];
   applyState(oldState);
   calc();
   return row;
+}
+function parseCSVText(text){
+  const rows=[]; let row=[], cell="", q=false;
+  text=(text||"").replace(/^\ufeff/,"");
+  for(let i=0;i<text.length;i++){
+    const c=text[i], n=text[i+1];
+    if(q){
+      if(c==='"' && n==='"'){cell+='"'; i++;}
+      else if(c==='"'){q=false;}
+      else{cell+=c;}
+    }else{
+      if(c==='"'){q=true;}
+      else if(c===','){row.push(cell); cell="";}
+      else if(c==='\n'){row.push(cell); rows.push(row); row=[]; cell="";}
+      else if(c==='\r'){}
+      else{cell+=c;}
+    }
+  }
+  if(cell!=="" || row.length){row.push(cell); rows.push(row);}
+  return rows.filter(r=>r.some(v=>String(v).trim()!==""));
+}
+function choiceToSeconds(v){
+  if(v===undefined || v===null) return 0;
+  const s=String(v).trim();
+  if(/^\d+$/.test(s)) return Number(s);
+  const parts=s.split(":").map(x=>Number(x)||0);
+  if(parts.length===2) return parts[0]*60+parts[1];
+  if(parts.length===3) return parts[0]*3600+parts[1]*60+parts[2];
+  return Number(s)||0;
+}
+function methodKeyFromCSV(v){
+  const text=String(v||"").trim();
+  const keys=["method_start","method_finish","method_after_process_start"];
+  if(keys.includes(text)) return text;
+  for(const lang of Object.keys(D)){
+    for(const k of keys){
+      if(D[lang] && D[lang][k]===text) return k;
+    }
+  }
+  if(text.includes("後工程")||text.includes("後工序")||text.includes("Post-process")||text.includes("susunod")) return "method_after_process_start";
+  if(text.includes("逆算")||text.includes("倒推")||text.includes("Back")) return "method_finish";
+  if(text.includes("開始")||text.includes("Start")) return "method_start";
+  return "method_after_process_start";
+}
+function csvRowToState(row){
+  const base=state();
+  base.docTitle=row[0]||base.docTitle||"〇〇食品";
+  base.lang=row[1]||base.lang||"ja";
+  base.method=methodKeyFromCSV(row[2]);
+  base.timeInput=row[3]||base.timeInput||"08:00";
+  base.pots=row[4]||base.pots||"1";
+  base.taktValue=choiceToSeconds(row[5])||90;
+  base.ricePerPot=row[6]||base.ricePerPot||"7";
+  base.yieldRate=row[7]||base.yieldRate||"2.1";
+  for(let i=0;i<7;i++){
+    if(row[8+i]!==undefined && String(row[8+i]).trim()!=="") base[`p${i}`]=choiceToSeconds(row[8+i]);
+    else base[`p${i}`]=base[`p${i}`]||0;
+  }
+  for(let i=0;i<3;i++){
+    const idx=23+i*3;
+    if(row[idx]!==undefined) base[`seasoningName${i}`]=row[idx]||`調味液${String.fromCharCode(65+i)}`;
+    if(row[idx+1]!==undefined) base[`seasoningAmount${i}`]=row[idx+1]||0;
+  }
+  return base;
+}
+function importCSVFile(file){
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(){
+    try{
+      const rows=parseCSVText(reader.result);
+      if(rows.length<2){E("err").textContent="CSVに読み込めるデータがありません。"; return;}
+      const settings=getCompanySettings();
+      let count=0, first=null;
+      rows.slice(1).forEach(row=>{
+        const st=csvRowToState(row);
+        const name=(st.docTitle||row[0]||"読込データ").trim();
+        if(!name) return;
+        st.docTitle=name;
+        settings[name]=st;
+        if(!first) first=st;
+        count++;
+      });
+      setCompanySettings(settings);
+      updateCompanySelect();
+      if(first){applyState(first); setLang(); calc();}
+      const swIdx=32;
+      if(rows[1] && rows[1][swIdx]) importStopwatchJSON(rows[1][swIdx]);
+      E("err").textContent=`CSVを読み込み、${count}件を保存済み設定に登録しました。`;
+    }catch(e){
+      E("err").textContent="CSV読込に失敗しました。";
+    }
+    E("csvImportFile").value="";
+  };
+  reader.readAsText(file,"utf-8");
 }
 function downloadCSV(){
   const header=[
@@ -696,7 +926,8 @@ function downloadCSV(){
     t("estimated_total_cooked_weight"),
     `${t("seasoning_name")}1`, `${t("seasoning_amount_per_pot")}1`, `${t("seasoning_required_amount")}1`,
     `${t("seasoning_name")}2`, `${t("seasoning_amount_per_pot")}2`, `${t("seasoning_required_amount")}2`,
-    `${t("seasoning_name")}3`, `${t("seasoning_amount_per_pot")}3`, `${t("seasoning_required_amount")}3`
+    `${t("seasoning_name")}3`, `${t("seasoning_amount_per_pot")}3`, `${t("seasoning_required_amount")}3`,
+    "ストップウォッチ記録JSON"
   ];
   const settings=getCompanySettings();
   let dataRows=[];
@@ -710,7 +941,106 @@ function downloadCSV(){
   const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"});
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="rice_customer_settings.csv"; a.click(); URL.revokeObjectURL(a.href);
 }
+const swState={items:[0,1,2].map(i=>({name:`No.${i+1}`,elapsed:0,running:false,startedAt:0,laps:[]}))};
+function normalizeLap(v){
+  if(typeof v==="string") return {time:v,category:"",memo:"",at:""};
+  return Object.assign({time:"",category:"",memo:"",at:""},v||{});
+}
+function loadStopwatches(){
+  try{
+    const saved=JSON.parse(localStorage.getItem("riceAppStopwatchesV51")||localStorage.getItem("riceAppStopwatchesV49")||localStorage.getItem("riceAppStopwatchesV48")||"null");
+    if(saved&&Array.isArray(saved.items)) saved.items.slice(0,3).forEach((x,i)=>{
+      swState.items[i]=Object.assign(swState.items[i],x);
+      swState.items[i].laps=(swState.items[i].laps||[]).map(normalizeLap);
+    });
+  }catch(e){}
+}
+function saveStopwatches(){localStorage.setItem("riceAppStopwatchesV51",JSON.stringify(swState));}
+function swNow(){return Date.now();}
+function swElapsed(i){const x=swState.items[i]; return x.elapsed+(x.running?(swNow()-x.startedAt):0);}
+function fmtStopwatch(ms){
+  const total=Math.floor(ms/1000), h=Math.floor(total/3600), m=Math.floor((total%3600)/60), s=total%60;
+  return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function escHtml(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
+function processMemoOptions(){
+  // ストップウォッチ記録の工程項目は、工程設定値と同じ7項目のみ。
+  const all=processKeys.map(k=>t(k)).filter(Boolean);
+  return all.map(v=>`<option value="${escHtml(v)}">${escHtml(v)}</option>`).join("");
+}
+function lapRowsHtml(x,i){
+  const laps=(x.laps||[]).map(normalizeLap);
+  if(!laps.length) return `<div style="padding:6px 0;color:var(--label);">記録はありません</div>`;
+  const rows=laps.map((v,j)=>`<tr><td>${escHtml(v.time)}</td><td>${escHtml(v.category||"")}${v.memo?`<br><span style="color:var(--text)">${escHtml(v.memo)}</span>`:""}${v.at?`<br><span>${escHtml(v.at)}</span>`:""}</td><td><button onclick="deleteLap(${i},${j})">削除</button></td></tr>`).join("");
+  return `<table><thead><tr><th>時間</th><th>内容・メモ</th><th>削除</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function renderStopwatches(){
+  const box=E("stopwatchBox"); if(!box) return; box.innerHTML="";
+  swState.items.forEach((x,i)=>{
+    x.laps=(x.laps||[]).map(normalizeLap);
+    const wrap=document.createElement("div");
+    wrap.innerHTML=`<div class="stopwatch-row"><input class="stopwatch-name-input" id="swName${i}" value="${escHtml(x.name||`No.${i+1}`)}"><div class="stopwatch-time" id="swTime${i}">${fmtStopwatch(swElapsed(i))}</div></div><div class="stopwatch-memo"><select id="swCategory${i}">${processMemoOptions()}</select><input id="swMemo${i}" type="text" placeholder="その他・補足メモを入力"></div><div class="stopwatch-actions"><button id="swStart${i}" onclick="toggleStopwatch(${i})">${x.running?"停止":"開始"}</button><button onclick="lapStopwatch(${i})">記録</button><button onclick="resetStopwatch(${i})">リセット</button></div><div class="stopwatch-laps" id="swLaps${i}">${lapRowsHtml(x,i)}</div><div class="stopwatch-clear"><button onclick="clearLaps(${i})">この記録を全削除</button></div>`;
+    box.appendChild(wrap);
+    E(`swName${i}`).addEventListener("input",()=>{swState.items[i].name=E(`swName${i}`).value||`No.${i+1}`; saveStopwatches();});
+  });
+  updateStopwatchButtons();
+}
+function updateStopwatchButtons(){
+  swState.items.forEach((x,i)=>{
+    const b=E(`swStart${i}`); if(b){b.textContent=x.running?"停止":"開始"; b.className=x.running?"running":"";}
+  });
+}
+function tickStopwatches(){
+  swState.items.forEach((_,i)=>{const el=E(`swTime${i}`); if(el) el.textContent=fmtStopwatch(swElapsed(i));});
+}
+function toggleStopwatch(i){
+  const x=swState.items[i];
+  if(x.running){x.elapsed=swElapsed(i); x.running=false; x.startedAt=0;}
+  else{x.running=true; x.startedAt=swNow();}
+  saveStopwatches(); updateStopwatchButtons(); tickStopwatches();
+}
+function resetStopwatch(i){
+  const x=swState.items[i];
+  x.elapsed=0; x.running=false; x.startedAt=0;
+  saveStopwatches(); renderStopwatches();
+}
+function lapStopwatch(i){
+  const x=swState.items[i];
+  const time=fmtStopwatch(swElapsed(i));
+  const category=(E(`swCategory${i}`)?.value||"").trim();
+  const memo=(E(`swMemo${i}`)?.value||"").trim();
+  const at=fmtDateTimeForRecord(new Date());
+  x.laps=x.laps||[];
+  x.laps.push({time,category,memo,at});
+  if(x.laps.length>100) x.laps=x.laps.slice(-100);
+  saveStopwatches();
+  renderStopwatches();
+}
+function deleteLap(i,j){
+  const x=swState.items[i];
+  x.laps=(x.laps||[]).map(normalizeLap);
+  x.laps.splice(j,1);
+  saveStopwatches(); renderStopwatches();
+}
+function clearLaps(i){
+  swState.items[i].laps=[];
+  saveStopwatches(); renderStopwatches();
+}
+function exportStopwatchJSON(){
+  return JSON.stringify(swState.items.map(x=>({name:x.name,laps:(x.laps||[]).map(normalizeLap)})));
+}
+function importStopwatchJSON(text){
+  try{
+    const arr=JSON.parse(text||"[]");
+    if(Array.isArray(arr)) arr.slice(0,3).forEach((x,i)=>{
+      swState.items[i].name=x.name||swState.items[i].name||`No.${i+1}`;
+      swState.items[i].laps=(x.laps||[]).map(normalizeLap);
+    });
+    saveStopwatches(); renderStopwatches();
+  }catch(e){}
+}
 E("lang").addEventListener("change",setLang);
+E("csvImportFile").addEventListener("change",e=>importCSVFile(e.target.files[0]));
 E("settingDetails").addEventListener("toggle",updateSettingToggle);
 E("detailDetails").addEventListener("toggle",updateDetailToggle);
 ["docTitle","method","timeInput","pots","ricePerPot","yieldRate","seasoningName0","seasoningAmount0","seasoningName1","seasoningAmount1","seasoningName2","seasoningAmount2"].forEach(id=>E(id).addEventListener("input",calc));
@@ -723,6 +1053,9 @@ window.addEventListener("beforeprint",()=>{
 });
 
 if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js").catch(()=>{})}
+loadStopwatches();
+renderStopwatches();
+setInterval(()=>{tickStopwatches(); updateClockAndCountdown();},500);
 buildSelectors();
 resetDefaults();
 updateCompanySelect();
