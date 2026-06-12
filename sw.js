@@ -1,4 +1,4 @@
-const CACHE = 'rice-app-ver62-finish-blink-fix';
+const CACHE = 'rice-app-ver70-fixed-top-restored';
 const ASSETS = [
   './',
   './index.html',

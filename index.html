@@ -237,6 +237,70 @@ input[type="time"], input[readonly]{ text-align:left !important; }
 @media print{#utilitySection,#stopwatchDetails{display:none!important}}
 
 </style>
+
+<style id="top-status-fixed-restore">
+.top-status{
+  position:fixed !important;
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  z-index:9999 !important;
+  margin:0 !important;
+  padding:calc(env(safe-area-inset-top, 0px) + 6px) 12px 6px !important;
+  background:rgba(242,242,247,.96) !important;
+  backdrop-filter:blur(14px) !important;
+  -webkit-backdrop-filter:blur(14px) !important;
+  border-bottom:.5px solid var(--line) !important;
+  box-sizing:border-box !important;
+}
+.top-status-card{
+  max-width:840px !important;
+  margin:0 auto !important;
+  background:var(--card) !important;
+  border-radius:14px !important;
+  padding:7px 10px !important;
+  box-shadow:0 .5px 0 rgba(0,0,0,.08) !important;
+  display:grid !important;
+  grid-template-columns:1fr 1fr 1fr !important;
+  gap:8px !important;
+  align-items:center !important;
+}
+.top-status-item{min-width:0 !important;}
+.top-status-label{
+  font-size:10px !important;
+  line-height:1.1 !important;
+  color:var(--label) !important;
+  font-weight:700 !important;
+  margin:0 0 2px !important;
+  white-space:nowrap !important;
+}
+.top-status-time,
+.top-status-finish,
+.top-status-count{
+  font-size:17px !important;
+  line-height:1.15 !important;
+  font-weight:800 !important;
+  font-variant-numeric:tabular-nums !important;
+  letter-spacing:-.2px !important;
+  margin:0 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  text-align:left !important;
+}
+.top-status-count{color:var(--blue) !important;}
+.top-status-sub{display:none !important;}
+body{padding-top:76px !important;}
+@media(max-width:420px){
+  .top-status{padding:calc(env(safe-area-inset-top, 0px) + 5px) 10px 5px !important;}
+  .top-status-card{padding:6px 9px !important;gap:5px !important;}
+  .top-status-label{font-size:9px !important;}
+  .top-status-time,.top-status-finish,.top-status-count{font-size:16px !important;}
+  body{padding-top:70px !important;}
+}
+@media print{.top-status{display:none!important}body{padding-top:0!important}}
+</style>
+
 </head>
 <body class="auth-locked">
 
@@ -250,6 +314,13 @@ input[type="time"], input[readonly]{ text-align:left !important; }
   </form>
 </div>
 <script>
+
+function __riceFmtHM(d){
+  if(!(d instanceof Date)) d = new Date(d);
+  if(isNaN(d.getTime())) return "--:--";
+  return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+}
+
 (function(){
   const PASS="4158";
   document.body.classList.add("auth-locked");
@@ -287,6 +358,8 @@ input[type="time"], input[readonly]{ text-align:left !important; }
       <div class="top-status-count" id="completionCountdown">--分</div>
     </div>
   </div>
+</div>
+</div>
 </div>
 <header>
   <h1 data-k="app_name">炊飯時間計算アプリ</h1>
@@ -514,7 +587,7 @@ function updateClockAndCountdown(){
   }
   if(tg){
     const ff=schedulePlan&&Number.isFinite(schedulePlan.finalFinishSec)?fmt(schedulePlan.finalFinishSec):"--:--";
-    tg.textContent=`終了予定 ${ff}`;
+    tg.textContent=`${ff}`;
   }
 }
 function parseDur(v){
