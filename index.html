@@ -74,11 +74,11 @@ tr:last-child td{border-bottom:0}
 .footer{font-size:11px;color:var(--label);text-align:center;margin-top:22px}
 
 /* Ver54: stopwatch kept / no confirm for stopwatch deletes / customer delete confirm */
-.top-status{position:sticky;top:0;z-index:50;margin:0 -12px 12px;padding:8px 12px;background:rgba(242,242,247,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:.5px solid var(--line)}
-.top-status-card{max-width:840px;margin:0 auto;background:var(--card);border-radius:16px;padding:8px 12px;box-shadow:0 .5px 0 rgba(0,0,0,.08);display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;align-items:center}
+.top-status{position: static;top:0;z-index:50;margin:0 -12px 12px;padding:8px 12px;background:rgba(242,242,247,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:.5px solid var(--line)}
+.top-status-card{max-width:840px;margin:0 auto;background:var(--card);border-radius:16px;padding:10px 14px;box-shadow:0 .5px 0 rgba(0,0,0,.08);display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center}
 .top-status-label{font-size:12px;color:var(--label);font-weight:700;margin-bottom:3px}
-.top-status-time{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
-.top-status-count{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--blue);letter-spacing:-.3px;text-align:right}
+.top-status-time{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.top-status-count{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--blue);letter-spacing:-.3px;text-align:right}
 .top-status-sub{font-size:11px;color:var(--label);text-align:right;margin-top:3px}
 @media(max-width:420px){.top-status-card{grid-template-columns:1fr}.top-status-count,.top-status-sub{text-align:left}.top-status-time,.top-status-count{font-size:22px}}
 @media print{.top-status{display:none!important}}
@@ -103,7 +103,7 @@ tr:last-child td{border-bottom:0}
 }
 
 .auth-locked .app{display:none!important}
-.auth-screen{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#F2F2F7,#FFFFFF);display:flex;align-items:center;justify-content:center;padding:24px}
+.auth-screen{position: static;inset:0;z-index:9999;background:linear-gradient(180deg,#F2F2F7,#FFFFFF);display:flex;align-items:center;justify-content:center;padding:24px}
 .auth-box{width:min(360px,100%);background:#fff;border-radius:22px;padding:26px 22px;box-shadow:0 12px 36px rgba(0,0,0,.12);text-align:center}
 .auth-title{font-size:23px;font-weight:800;margin:0 0 8px;color:var(--text)}
 .auth-text{font-size:14px;color:var(--label);line-height:1.5;margin:0 0 18px}
