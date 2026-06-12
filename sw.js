@@ -1,4 +1,4 @@
-const CACHE = 'rice-app-ver58-no-stopwatch-top-record';
+const CACHE = 'rice-app-ver62-finish-blink-fix';
 const ASSETS = [
   './',
   './index.html',
