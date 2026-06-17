@@ -1,4 +1,4 @@
-const CACHE = 'rice-app-ver70-fixed-top-restored';
+const CACHE = 'rice-app-ver71-password1120';
 const ASSETS = [
   './',
   './index.html',
